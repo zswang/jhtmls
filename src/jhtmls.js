@@ -29,11 +29,18 @@ void function(exports) {
 
   /**
    * 构造模板的处理函数
-   * 不是JS块的规则
-   *   非主流字符开头
-   *     示例：#、<div>
-   *     正则：/^\s*[#<].*$/mg
+   * 不是 JS 行的正则判断
+   *   非 JS 字符开头
+   *     示例：#、<div>、汉字
+   *     正则：/^[\w\n]*[^\w\/'"{}\[\]+\-():;].*$/mg
+   *   不是 else 等单行语句
+   *     示例：hello world
+   *     正则：/^(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$/mg
+   *   明显不是 JS
+   *     示例：http://www.baidu.com、name:(#{name})、email:xxx@baidu.com
+   *     正则：/^[^'"\n]*(:\/\/|#\{|@).*$/mg
    * @param {String} template 模板字符
+   * @return {Function} 返回编译后的函数
    */
   function build(template) {
     var body = [];
@@ -44,33 +51,38 @@ void function(exports) {
       })
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
-      .replace(/((^\s*[#<].*$)\s?)+/mg, function(expression) { // 输出原文
-        expression = ["'", expression
-          .replace(/&none;/g, '') // 空字符
-          .replace(/["'\\]/g, '\\$&') // 处理转义符
-          .replace(/\n/g, '\\n') // 处理回车转义符
-          .replace(/(!?#)\{(.*?)\}/g, function (all, flag, value) { // 变量替换
-            value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
+      .replace(/^[\w\n]*[^\w\/'"{}\[\]+\-():;].*$|(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$|^[^'"\n]*(:\/\/|#\{|@).*$/mg,
+        function(expression) { // 输出原文
+          expression = ["'", expression
+            .replace(/&none;/g, '') // 空字符
+            .replace(/["'\\]/g, '\\$&') // 处理转义符
+            .replace(/\n/g, '\\n') // 处理回车转义符
+            .replace(/(!?#)\{(.*?)\}/g, function (all, flag, value) { // 变量替换
+              if (!value) {
+                return '';
+              }
+              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
 
-            var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
-              !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+              var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
+                !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
 
-            return ["',", 
-              identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
-              (flag == '#' ? '_encode_' : ''),
-              '(', value, "),'"
-            ].join('');
+              return ["',", 
+                identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
+                (flag == '#' ? '_encode_' : ''),
+                '(', value, "),'"
+              ].join('');
 
-          }), "'"
-        ].join('').replace(/^'',|,''$/g, '');
-        if (expression) {
-          return ['_output_.push(', expression, ');'].join('');
+            }), "'"
+          ].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
+          if (expression) {
+            return ['_output_.push(', expression, ');'].join('');
+          }
+          return '';
         }
-        return '';
-      })
+      )
     );
     body.push('}');
-    /* DEBUG *
+    /* DEBUG */
     console.log(body.join(''));
     //*/
     return new Function('_output_', '_encode_', 'helper', body.join(''));
@@ -90,16 +102,18 @@ void function(exports) {
     }
 
     var fn = build(template);
+
     var format = function(d, h) {
       var output = [];
       fn.call(d, output, encodeHTML, h);
       return output.join('');
     };
-    if (arguments.length <= 1) {
+
+    if (arguments.length <= 1) { // 无渲染数据
       return format;      
     }
 
-    return render(template)(data, helper);
+    return format(data, helper);
   };
   
   exports.render = render;
