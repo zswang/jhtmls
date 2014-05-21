@@ -1,4 +1,112 @@
-JhtmlS 是 AceTemplate 的升级版本
+# jhtmls
+
+标签: 帮助文档 jhtmls 前端模板
+
+----
+
+## 概述
+
+### jhtmls 是什么？
+
+`jhtmls` 是一个专门处理 HTML 格式的前端模板。`jhtmls` 会按行自动识别 JS 和 HTML 语法，所以不需要指定额外语法标记符（诸如：`<%%>`、`{{}}`）。这种设计是为了降低前端模板的学习和使用成本。
+
+### 历史
+
+为了便于 `jhtmls` 的发展和维护，从 `AceEngine` 抽出 [AceTemplate](https://code.google.com/p/ace-engine/wiki/AceTemplate) 。
+
+## 语法识别情景
+
+### 赋值语句
+
+```
+a = 1;
+b = 2
+```
+
+### 表达式
+
+```
+typeof a
+a / b
+```
+
+### 字符串
+
+```
+"双引号"
+'单引号'
+```
+
+### 双目运算
+```
+a ? b : c
+a && b ? c : 0
+a | b ? c : 0
+a ^ b ? c : 0
+```
+
+### 函数调用
+```
+a()
+b(a, c)
+```
+
+### 邮箱地址
+
+【命中】
+
+```
+admin@gmail.com
+jack.tang@cctv.cn
+```
+
+### 链接地址
+
+【命中】
+
+```
+http://www.baidu.com
+ftp://baidu.com/files
+```
+
+### 普通单词
+
+【命中】
+```
+hello
+red
+```
+
+### 语法单词
+
+```
+else
+do
+try
+finally
+```
+
+### 句子
+
+【命中】
+```
+hello world
+```
+
+### 语法
+
+```
+{  }
+```
+
+### 转义变量
+
+【命中】
+```
+#{value}
+```
+
+## 调用示例
 
 ```javascript
 var data = [

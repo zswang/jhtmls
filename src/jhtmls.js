@@ -32,13 +32,10 @@ void function(exports) {
    * 不是 JS 行的正则判断
    *   非 JS 字符开头
    *     示例：#、<div>、汉字
-   *     正则：/^[\w\n]*[^\w\/'"{}\[\]+\-():;].*$/mg
+   *     正则：/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$/mg
    *   不是 else 等单行语句
    *     示例：hello world
-   *     正则：/^(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$/mg
-   *   明显不是 JS
-   *     示例：http://www.baidu.com、name:(#{name})、email:xxx@baidu.com
-   *     正则：/^[^'"\n]*(:\/\/|#\{|@).*$/mg
+   *     正则：/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$/mg
    * @param {String} template 模板字符
    * @return {Function} 返回编译后的函数
    */
@@ -51,7 +48,7 @@ void function(exports) {
       })
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
-      .replace(/^[\w\n]*[^\w\/'"{}\[\]+\-():;].*$|(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$|^[^'"\n]*(:\/\/|#\{|@).*$/mg,
+      .replace(/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$/mg,
         function(expression) { // 输出原文
           expression = ["'", expression
             .replace(/&none;/g, '') // 空字符
