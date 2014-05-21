@@ -82,7 +82,7 @@ void function(exports) {
       )
     );
     body.push('}');
-    /* DEBUG */
+    /* DEBUG *
     console.log(body.join(''));
     //*/
     return new Function('_output_', '_encode_', 'helper', body.join(''));
@@ -104,6 +104,7 @@ void function(exports) {
     var fn = build(template);
 
     var format = function(d, h) {
+      h = h || exports;
       var output = [];
       fn.call(d, output, encodeHTML, h);
       return output.join('');

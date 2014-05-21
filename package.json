@@ -1,0 +1,37 @@
+{
+  "name": "jhtmls",
+  "title": "jhtmls",
+  "description": "JS and HTML alternate template",
+  "version": "1.0.0",
+  "homepage": "https://github.com/zswang/jhtmls",
+  "author": {
+    "name": "zswang",
+    "url": "http://weibo.com/zswang"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zswang/jhtmls.git"
+  },
+  "keywords": [
+    "template",
+    "javascript"
+  ],
+  "bugs": {
+    "url": "https://github.com/zswang/jhtmls/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt"
+    }
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cmd-transport": "~0.3.0",
+    "grunt-cmd-concat": "~0.2.5",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.6",
+    "grunt-contrib-clean": "~0.5.0"
+  }
+}
