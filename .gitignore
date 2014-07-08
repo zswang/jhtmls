@@ -1,0 +1,10 @@
+# ignore any vim files:
+*.sw[a-z]
+vim/.netrwhist
+node_modules
+.DS_Store
+*.db
+*.bak
+*.tmp
+*.cmd
+~*

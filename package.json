@@ -2,8 +2,9 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate template",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/zswang/jhtmls",
+  "main": "src/jhtmls.js",
   "author": {
     "name": "zswang",
     "url": "http://weibo.com/zswang"
@@ -14,24 +15,20 @@
   },
   "keywords": [
     "template",
-    "javascript"
+    "javascript",
+    "html"
   ],
   "bugs": {
     "url": "https://github.com/zswang/jhtmls/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt"
-    }
-  ],
-  "dependencies": {},
+  "license": "MIT",
+  "readmeFilename": "README.md",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-cmd-transport": "~0.3.0",
-    "grunt-cmd-concat": "~0.2.5",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.6",
-    "grunt-contrib-clean": "~0.5.0"
+    "mocha": "*",
+    "should": "*",
+    "uglify-js": "*"
+  },
+  "scripts": {
+    "test": "mocha -R spec && npm run coverage"
   }
 }

@@ -1,7 +1,7 @@
 var jhtmls = typeof exports == 'undefined' ? jhtmls || {} : exports;
 
 void function(exports) {
-
+  'use strict';
   /**
    * jhtmls
    * 一套基于HTML和JS语法自由穿插的模板系统
@@ -112,7 +112,7 @@ void function(exports) {
     }
 
     return format(data, helper);
-  };
+  }
   
   exports.render = render;
 
