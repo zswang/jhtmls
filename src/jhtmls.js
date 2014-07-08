@@ -17,6 +17,10 @@ void function(exports) {
     ' ': 'nbsp'
   };
 
+  var options = { // 配置项
+    '$': true // 支持 $name
+  };
+
   /**
    * HTML编码
    * @param {String} text 文本
@@ -48,37 +52,50 @@ void function(exports) {
       })
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
-      .replace(/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$/mg,
+      .replace(/^([ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$)\s?/mg,
         function(expression) { // 输出原文
-          expression = ["'", expression
+
+          // 处理空白字符
+          expression = expression
             .replace(/&none;/g, '') // 空字符
             .replace(/["'\\]/g, '\\$&') // 处理转义符
-            .replace(/\n/g, '\\n') // 处理回车转义符
-            .replace(/(!?#)\{(.*?)\}/g, function (all, flag, value) { // 变量替换
-              if (!value) {
-                return '';
-              }
-              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
+            .replace(/\n/g, '\\n'); // 处理回车转义符
 
-              var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
-                !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+          // 处理简写
+          if (options['$']) {
+            expression = expression.replace(/\$([a-z_]+\w*(\.[a-z_]+\w*)*)/ig, '#{$1}');
+          }
 
-              return ["',", 
-                identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
-                (flag == '#' ? '_encode_' : ''),
-                '(', value, "),'"
-              ].join('');
+          // 处理变量
+          expression = expression.replace(/(!?#)\{(.*?)\}/g, function (all, flag, value) { // 变量替换
+            if (!value) {
+              return '';
+            }
+            value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
 
-            }), "'"
-          ].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
+            var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
+              !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+
+            return ["',", 
+              identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
+              (flag == '#' ? '_encode_' : ''),
+              '(', value, "),'"
+            ].join('');
+          });
+
+          // 处理输出
+          expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
+
           if (expression) {
             return ['_output_.push(', expression, ');'].join('');
           }
+
           return '';
         }
       )
     );
     body.push('}');
+
     /* DEBUG *
     console.log(body.join(''));
     //*/
@@ -95,7 +112,10 @@ void function(exports) {
   function render(template, data, helper) {
     
     if (typeof template == 'function') { // 函数多行注释处理
-      template = String(template).replace(/^[^\{]*\{\s*\/\*!?|\*\/[;|\s]*\}$/g, '');
+      template = String(template).replace(
+        /^[^\{]*\{\s*\/\*!?[ \f\t\v]*\n?|[ \f\t\v]*\*\/[;|\s]*\}$/g, // 替换掉函数前后部分
+        ''
+      );
     }
 
     var fn = build(template);
@@ -113,7 +133,12 @@ void function(exports) {
 
     return format(data, helper);
   }
+
+  function config(key, value) {
+    options[key] = value;
+  }
   
   exports.render = render;
+  exports.config = config;
 
 }(jhtmls);
