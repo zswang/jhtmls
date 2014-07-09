@@ -17,10 +17,6 @@ void function(exports) {
     ' ': 'nbsp'
   };
 
-  var options = { // 配置项
-    '$': true // 支持 $name
-  };
-
   /**
    * HTML编码
    * @param {String} text 文本
@@ -61,27 +57,29 @@ void function(exports) {
             .replace(/["'\\]/g, '\\$&') // 处理转义符
             .replace(/\n/g, '\\n'); // 处理回车转义符
 
-          // 处理简写
-          if (options['$']) {
-            expression = expression.replace(/\$([a-z_]+\w*(\.[a-z_]+\w*)*)/ig, '#{$1}');
-          }
+          // 处理变量 
+          expression = expression.replace( // #{expression} | $name
+            /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
+            function (all, flag, value, flag2, value2) { // 变量替换
+              if (!flag) { // 匹配 $name
+                flag = flag2;
+                value = value2;
+              }
+              if (!value) {
+                return '';
+              }
+              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
 
-          // 处理变量
-          expression = expression.replace(/(!?#)\{(.*?)\}/g, function (all, flag, value) { // 变量替换
-            if (!value) {
-              return '';
+              var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
+                !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+
+              return ["',", 
+                identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
+                (flag == '#' || flag == '$' ? '_encode_' : ''),
+                '(', value, "),'"
+              ].join('');
             }
-            value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
-
-            var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
-              !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
-
-            return ["',", 
-              identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
-              (flag == '#' ? '_encode_' : ''),
-              '(', value, "),'"
-            ].join('');
-          });
+          );
 
           // 处理输出
           expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
@@ -134,11 +132,6 @@ void function(exports) {
     return format(data, helper);
   }
 
-  function config(key, value) {
-    options[key] = value;
-  }
-  
   exports.render = render;
-  exports.config = config;
 
 }(jhtmls);

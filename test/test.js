@@ -10,7 +10,7 @@ describe('render(String)', function() {
   it('生成渲染函数 error.', function() {
     var render = jhtmls.render('#{x + y}');
     assert.equal('3', render({ x: 1, y: 2 }));
-    assert.equal('12', render({ x: 5, y: 7}));
+    assert.equal('12', render({ x: 5, y: 7 }));
   });
 });
 
@@ -37,16 +37,62 @@ describe('render(Function, Object)', function() {
       })
     );
   });
+
+  it('函数注释模板，处理 $ 、# 混用 error.', function() {
+    var render = jhtmls.render(function() {/*!
+var $length = data.length;
+<li><a href="$url">$title - #{$length * 5}</a></li>
+    */});
+    assert.equal(
+      '<li><a href="http://www.baidu.com">baidu - 25</a></li>',
+      render({
+        title: 'baidu',
+        url: 'http://www.baidu.com',
+        data: {
+          length: 5
+        }
+      })
+    );
+  });
+
   it('函数注释模板，处理换行 error.', function() {
     var render = jhtmls.render(function() {/*!
 <li><a href="#{url}">#{title}</a></li>
 <li><a href="#{url}">#{title}</a></li>
     */});
     assert.equal(
-      '<li><a href="http://www.baidu.com">baidu</a></li>\n<li><a href="http://www.baidu.com">baidu</a></li>',
+      '\
+<li><a href="http://www.baidu.com">baidu</a></li>\n\
+<li><a href="http://www.baidu.com">baidu</a></li>',
       render({
         title: 'baidu',
         url: 'http://www.baidu.com'
+      })
+    );
+  });
+
+});
+
+describe('render(String, Object, Object)', function() {
+  it('使用 helper 扩展处理 error.', function() {
+    var render = jhtmls.render(function() {/*!
+<li><a href="#{url}">!#{helper.color(title, 'red')}</a></li>
+    */});
+    assert.equal(
+      '<li><a href="http://www.baidu.com"><span style="color: red;">baidu</span></a></li>',
+      render({
+        title: 'baidu',
+        url: 'http://www.baidu.com'
+      }, {
+        color: function(text, color) {
+          return jhtmls.render(
+            '<span style="color: #{color};">#{text}</span>', 
+            {
+              text: text,
+              color: color
+            }
+          );
+        }
       })
     );
   });
