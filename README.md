@@ -5,6 +5,7 @@
 ----
 
 [![Build Status](https://travis-ci.org/zswang/jhtmls.png)](https://travis-ci.org/zswang/jhtmls)
+[![NPM version](https://img.shields.io/npm/v/jhtmls.svg)](http://badge.fury.io/js/jhtmls)
 
 ## 概述
 
