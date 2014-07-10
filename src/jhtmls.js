@@ -44,11 +44,12 @@ void function(exports) {
     body.push('with(this){');
     body.push(template
       .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function(all) { // 处理<script>和<style>原样输出
-        return ['#{unescape("', escape(all), '")}'].join('');
+        return ['!#{unescape("', escape(all), '")}'].join('');
       })
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
-      .replace(/^([ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$)\s?/mg,
+      .replace(
+        /^([ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$)\s?/mg,
         function(expression) { // 输出原文
 
           // 处理空白字符
