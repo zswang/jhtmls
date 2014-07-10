@@ -1,0 +1,3 @@
+<div>
+  <label>username: $name<label><label>!#{helper.link(weibo, 'weibo')}<label>
+</div>

@@ -100,12 +100,29 @@ describe('render(String, Object, Object)', function() {
 });
 
 describe('fixtures', function() {
-  ['script'].forEach(function(item) {
+  var items = fs.readdirSync('test/fixtures').filter(function(item) {
+    return /\.html$/.test(item);
+  }).map(function(item) {
+    return item.replace(/\.html$/, '');
+  });
+
+  items.forEach(function(item) {
     var text_html = String(fs.readFileSync(util.format('test/fixtures/%s.html', item)));
     var text_jhtmls = String(fs.readFileSync(util.format('test/fixtures/%s.jhtmls', item)));
     var json = JSON.parse(fs.readFileSync(util.format('test/fixtures/%s.json', item)));
-    it(item, function() {
-      assert.equal(text_html, jhtmls.render(text_jhtmls, json));
-    });
+
+    var file_helper = util.format('test/fixtures/%s.helper', item);
+    if (fs.existsSync(file_helper)) {
+      var helper = new Function(
+        'return (' + fs.readFileSync(file_helper) + ')'
+      )();
+      it(item, function() {
+        assert.equal(text_html, jhtmls.render(text_jhtmls, json, helper));
+      });
+    } else {
+      it(item, function() {
+        assert.equal(text_html, jhtmls.render(text_jhtmls, json));
+      });
+    }
   });
 });

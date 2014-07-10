@@ -1,0 +1,11 @@
+[{
+  "id": "T1",
+  "city": "BeiJing -> ChangSha",
+  "distance": 1587,
+  "hint": "<span style=\"color: red;\">无票</span>"
+}, {
+  "id": "T11",
+  "city": "GuangZhou -> ShenYang",
+  "distance": 2263,
+  "hint": "<span style=\"color: green;\">有票</span>"
+}]

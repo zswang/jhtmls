@@ -1,0 +1,5 @@
+{
+  link: function(url, title) {
+    return '<a href="' + url + '">' + title + '</a>';
+  }
+}

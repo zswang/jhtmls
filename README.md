@@ -1,8 +1,4 @@
-# jhtmls
-
-标签: 帮助文档 jhtmls 前端模板 javascript template
-
-----
+# jhtmls(#$)
 
 [![Build Status](https://img.shields.io/travis/zswang/jhtmls/master.svg)](https://travis-ci.org/zswang/jhtmls)
 [![NPM version](https://img.shields.io/npm/v/jhtmls.svg)](http://badge.fury.io/js/jhtmls)
@@ -35,7 +31,7 @@ var data = [
 
 var render = jhtmls.render(function() {/*!
 <ul>
-forEach(function (item) {
+forEach(function(item) {
   with (item) {
   <li>$title -- $date</li>
   }

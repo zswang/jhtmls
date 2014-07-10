@@ -98,7 +98,10 @@ void function(exports) {
     /* DEBUG *
     console.log(body.join(''));
     //*/
-    return new Function('_output_', '_encode_', 'helper', body.join(''));
+    return new Function(
+      '_output_', '_encode_', 'helper', 'jhtmls',
+      body.join('')
+    );
   }
   
   /**
@@ -122,7 +125,7 @@ void function(exports) {
     var format = function(d, h) {
       h = h || exports;
       var output = [];
-      fn.call(d, output, encodeHTML, h);
+      fn.call(d, output, encodeHTML, h, exports);
       return output.join('');
     };
 
