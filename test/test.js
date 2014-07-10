@@ -1,6 +1,7 @@
 var assert = require('should');
 var jhtmls = require('..');
 var fs = require('fs');
+var util = require('util');
 
 function fixture(name) {
   return fs.readFileSync('test/fixtures/' + name, 'utf8').replace(/\r/g, '');
@@ -95,5 +96,16 @@ describe('render(String, Object, Object)', function() {
         }
       })
     );
+  });
+});
+
+describe('fixtures', function() {
+  ['script'].forEach(function(item) {
+    var text_html = String(fs.readFileSync(util.format('test/fixtures/%s.html', item)));
+    var text_jhtmls = String(fs.readFileSync(util.format('test/fixtures/%s.jhtmls', item)));
+    var json = JSON.parse(fs.readFileSync(util.format('test/fixtures/%s.json', item)));
+    it(item, function() {
+      assert.equal(text_html, jhtmls.render(text_jhtmls, json));
+    });
   });
 });
