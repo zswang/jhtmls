@@ -2,7 +2,7 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate template",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/zswang/jhtmls",
   "main": "src/jhtmls.js",
   "author": {
