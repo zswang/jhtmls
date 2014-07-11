@@ -5,7 +5,7 @@
   "authors": [
     "Zswang <wjhu111@21cn.com>"
   ],
-  "description": "javascript template",
+  "description": "JS and HTML alternate javascript template",
   "main": "src/jhtmls.js",
   "moduleType": [
     "globals",
