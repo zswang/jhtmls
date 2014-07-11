@@ -1,0 +1,29 @@
+{
+  "name": "jhtmls",
+  "version": "0.0.4",
+  "homepage": "https://github.com/zswang/jhtmls",
+  "authors": [
+    "Zswang <wjhu111@21cn.com>"
+  ],
+  "description": "javascript template",
+  "main": "src/jhtmls.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "javascript",
+    "template",
+    "html"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ]
+}
