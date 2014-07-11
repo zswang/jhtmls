@@ -120,6 +120,11 @@ void function(exports) {
 
     var fn = build(template);
 
+    /**
+     * 格式化
+     * @param{Object} d 数据
+     * @param{Object} h 辅助对象 helper
+     */
     var format = function(d, h) {
       h = h || exports;
       var output = [];
