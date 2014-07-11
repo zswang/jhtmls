@@ -8,7 +8,7 @@ function fixture(name) {
 }
 
 describe('render(String)', function() {
-  it('生成渲染函数 error.', function() {
+  it('生成渲染函数', function() {
     var render = jhtmls.render('#{x + y}');
     assert.equal('3', render({ x: 1, y: 2 }));
     assert.equal('12', render({ x: 5, y: 7 }));
@@ -16,14 +16,14 @@ describe('render(String)', function() {
 });
 
 describe('render(String, Object)', function() {
-  it('直接渲染函数 error.', function() {
+  it('直接渲染函数', function() {
     assert.equal(3, jhtmls.render('#{x + y}', { x: 1, y: 2 }));
     assert.equal('<b>3</b>', jhtmls.render('<b>#{x + y}</b>', { x: 1, y: 2 }));
   });
 });
 
 describe('render(Function, Object)', function() {
-  it('函数注释模板，处理 $ 简写 error.', function() {
+  it('函数注释模板，处理 $ 简写', function() {
     var render = jhtmls.render(function() {/*!
 <li><a href="$url">$title - $data.length</a></li>
     */});
@@ -39,7 +39,7 @@ describe('render(Function, Object)', function() {
     );
   });
 
-  it('函数注释模板，处理 $ 、# 混用 error.', function() {
+  it('函数注释模板，处理 $ 、# 混用', function() {
     var render = jhtmls.render(function() {/*!
 var $length = data.length;
 <li><a href="$url">$title - #{$length * 5}</a></li>
@@ -56,7 +56,7 @@ var $length = data.length;
     );
   });
 
-  it('函数注释模板，处理换行 error.', function() {
+  it('函数注释模板，处理换行', function() {
     var render = jhtmls.render(function() {/*!
 <li><a href="#{url}">#{title}</a></li>
 <li><a href="#{url}">#{title}</a></li>
@@ -75,7 +75,7 @@ var $length = data.length;
 });
 
 describe('render(String, Object, Object)', function() {
-  it('使用 helper 扩展处理 error.', function() {
+  it('使用 helper 扩展处理', function() {
     var render = jhtmls.render(function() {/*!
 <li><a href="#{url}">!#{helper.color(title, 'red')}</a></li>
     */});
@@ -87,7 +87,7 @@ describe('render(String, Object, Object)', function() {
       }, {
         color: function(text, color) {
           return jhtmls.render(
-            '<span style="color: #{color};">#{text}</span>', 
+            '<span style="color: #{color};">#{text}</span>',
             {
               text: text,
               color: color

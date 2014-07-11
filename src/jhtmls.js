@@ -1,4 +1,4 @@
-var jhtmls = typeof exports == 'undefined' ? jhtmls || {} : exports;
+var jhtmls = typeof exports === 'undefined' ? jhtmls || {} : exports;
 
 void function(exports) {
   'use strict';
@@ -56,31 +56,29 @@ void function(exports) {
           expression = expression
             .replace(/&none;/g, '') // 空字符
             .replace(/["'\\]/g, '\\$&') // 处理转义符
-            .replace(/\n/g, '\\n'); // 处理回车转义符
+            .replace(/\n/g, '\\n') // 处理回车转义符
+            .replace( // #{expression} | $name
+              /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
+              function(all, flag, value, flag2, value2) { // 变量替换
+                if (flag2) { // 匹配 $name
+                  flag = flag2;
+                  value = value2;
+                }
+                if (!value) {
+                  return '';
+                }
+                value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
 
-          // 处理变量 
-          expression = expression.replace( // #{expression} | $name
-            /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
-            function (all, flag, value, flag2, value2) { // 变量替换
-              if (!flag) { // 匹配 $name
-                flag = flag2;
-                value = value2;
+                var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
+                  !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+
+                return ["',",
+                  identifier ? ['typeof ', value, "==='undefined'?'':"].join('') : '',
+                  (flag === '#' || flag === '$' ? '_encode_' : ''),
+                  '(', value, "),'"
+                ].join('');
               }
-              if (!value) {
-                return '';
-              }
-              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
-
-              var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
-                !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
-
-              return ["',", 
-                identifier ? ['typeof ', value, "=='undefined'?'':"].join('') : '',
-                (flag == '#' || flag == '$' ? '_encode_' : ''),
-                '(', value, "),'"
-              ].join('');
-            }
-          );
+            );
 
           // 处理输出
           expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
@@ -103,7 +101,7 @@ void function(exports) {
       body.join('')
     );
   }
-  
+
   /**
    * 格式化输出
    * @param {String|Function} template 模板本身 或 模板放在函数行注释中
@@ -112,8 +110,8 @@ void function(exports) {
    * @return {Function|String} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
    */
   function render(template, data, helper) {
-    
-    if (typeof template == 'function') { // 函数多行注释处理
+
+    if (typeof template === 'function') { // 函数多行注释处理
       template = String(template).replace(
         /^[^\{]*\{\s*\/\*!?[ \f\t\v]*\n?|[ \f\t\v]*\*\/[;|\s]*\}$/g, // 替换掉函数前后部分
         ''
@@ -130,7 +128,7 @@ void function(exports) {
     };
 
     if (arguments.length <= 1) { // 无渲染数据
-      return format;      
+      return format;
     }
 
     return format(data, helper);
