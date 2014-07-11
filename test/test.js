@@ -109,8 +109,14 @@ describe('fixtures', function() {
   items.forEach(function(item) {
     var text_html = String(fs.readFileSync(util.format('test/fixtures/%s.html', item)));
     var text_jhtmls = String(fs.readFileSync(util.format('test/fixtures/%s.jhtmls', item)));
-    var json = JSON.parse(fs.readFileSync(util.format('test/fixtures/%s.json', item)));
 
+    var file_json = util.format('test/fixtures/%s.json', item);
+    var json;
+    if (fs.existsSync(file_json)) {
+      json = JSON.parse(fs.readFileSync(file_json));
+    } else {
+      json = {};
+    }
     var file_helper = util.format('test/fixtures/%s.helper', item);
     if (fs.existsSync(file_helper)) {
       var helper = new Function(

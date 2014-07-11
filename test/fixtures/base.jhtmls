@@ -1,0 +1,38 @@
+a = 1;
+
+b = 2
+var c = 3;
+typeof a
+"双引号"
+'单引号'
+a ? b : c
+a && b ? c : 0
+a | b ? c : 0
+a ^ b ? c : 0
+parseInt()
+parseInt(a, c)
+admin@gmail.com
+jack.tang@cctv.cn
+http://www.baidu.com
+ftp://baidu.com/files
+hello
+red
+if(a)
+{
+}
+else
+{
+}
+do
+{
+} while(0);
+try
+{
+}
+finally
+{
+}
+hello world
+{  }
+#{value1}
+$value2
