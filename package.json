@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "mocha -R spec && npm run coverage",
-    "compress": "uglifyjs src/jhtmls.js -o dist/jhtmls.min.js --source-map dist/jhtmls.min.js.map -p 5 -c -m",
+    "compress": "uglifyjs src/jhtmls.js -o dist/jhtmls.min.js --source-map dist/jhtmls.min.js.map --source-map-url jhtmls.min.js.map -p 5 -c -m",
     "lint": "jshint src/*.js *.json"
   }
 }
