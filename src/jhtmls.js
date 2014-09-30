@@ -106,7 +106,7 @@ void function(exports) {
    * 格式化输出
    * @param {String|Function} template 模板本身 或 模板放在函数行注释中
    * @param {Object} data 格式化的数据，默认为空字符串
-   * @param {Object} helper 附加数据(默认为模板对象)
+   * @param {Object} helper 附加数据(默认为渲染函数)
    * @return {Function|String} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
    */
   function render(template, data, helper) {
@@ -126,8 +126,13 @@ void function(exports) {
      * @param{Object} h 辅助对象 helper
      */
     var format = function(d, h) {
-      h = h || exports;
+      // h = h || fn;
       var output = [];
+      if (typeof h === 'undefined') {
+        h = function(d) {
+          fn.call(d, output, encodeHTML, h, exports);
+        };
+      }
       fn.call(d, output, encodeHTML, h, exports);
       return output.join('');
     };

@@ -1,0 +1,8 @@
+<ul>
+forEach(function(item) {
+  <li>#{item.title}</li>
+  if (item.nodes) {
+    helper(item.nodes);
+  }
+});
+</ul>
