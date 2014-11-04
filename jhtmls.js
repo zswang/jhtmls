@@ -1,7 +1,9 @@
-var jhtmls = typeof exports === 'undefined' ? jhtmls || {} : exports;
+void function(exportName) {
 
-void function(exports) {
   'use strict';
+
+  var exports = exports || {};
+
   /**
    * jhtmls
    * 一套基于HTML和JS语法自由穿插的模板系统
@@ -55,30 +57,29 @@ void function(exports) {
           // 处理空白字符
           expression = expression
             .replace(/&none;/g, '') // 空字符
-            .replace(/["'\\]/g, '\\$&') // 处理转义符
-            .replace(/\n/g, '\\n') // 处理回车转义符
-            .replace( // #{expression} | $name
-              /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
-              function(all, flag, value, flag2, value2) { // 变量替换
-                if (flag2) { // 匹配 $name
-                  flag = flag2;
-                  value = value2;
-                }
-                if (!value) {
-                  return '';
-                }
-                value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
-
-                var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
-                  !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
-
-                return ["',",
-                  identifier ? ['typeof ', value, "==='undefined'?'':"].join('') : '',
-                  (flag === '#' || flag === '$' ? '_encode_' : ''),
-                  '(', value, "),'"
-                ].join('');
+          .replace(/["'\\]/g, '\\$&') // 处理转义符
+          .replace(/\n/g, '\\n') // 处理回车转义符
+          .replace( // #{expression} | $name
+            /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
+            function(all, flag, value, flag2, value2) { // 变量替换
+              if (flag2) { // 匹配 $name
+                flag = flag2;
+                value = value2;
               }
-            );
+              if (!value) {
+                return '';
+              }
+              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
+
+              var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
+                !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
+
+              return ["',",
+                identifier ? ['typeof ', value, "==='undefined'?'':"].join('') : '', (flag === '#' || flag === '$' ? '_encode_' : ''),
+                '(', value, "),'"
+              ].join('');
+            }
+          );
 
           // 处理输出
           expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
@@ -93,9 +94,7 @@ void function(exports) {
     );
     body.push('}');
 
-    /* DEBUG *
-    console.log(body.join(''));
-    //*/
+    
     return new Function(
       '_output_', '_encode_', 'helper', 'jhtmls',
       body.join('')
@@ -106,7 +105,7 @@ void function(exports) {
    * 格式化输出
    * @param {String|Function} template 模板本身 或 模板放在函数行注释中
    * @param {Object} data 格式化的数据，默认为空字符串
-   * @param {Object} helper 附加数据(默认为模板对象)
+   * @param {Object} helper 附加数据(默认为渲染函数)
    * @return {Function|String} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
    */
   function render(template, data, helper) {
@@ -126,8 +125,13 @@ void function(exports) {
      * @param{Object} h 辅助对象 helper
      */
     var format = function(d, h) {
-      h = h || exports;
+      // h = h || fn;
       var output = [];
+      if (typeof h === 'undefined') {
+        h = function(d) {
+          fn.call(d, output, encodeHTML, h, exports);
+        };
+      }
       fn.call(d, output, encodeHTML, h, exports);
       return output.join('');
     };
@@ -141,4 +145,16 @@ void function(exports) {
 
   exports.render = render;
 
-}(jhtmls);
+  if (typeof define === 'function') {
+    if (define.amd || define.cmd) {
+      define(function() {
+        return exports;
+      });
+    }
+  } else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = exports;
+  } else {
+    window[exportName] = exports;
+  }
+
+}('jhtmls');

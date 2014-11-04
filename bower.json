@@ -1,13 +1,12 @@
 {
-<<<<<<< HEAD
   "name": "jhtmls",
-  "version": "0.0.5",
-  "homepage": "http://jhtmls.com/",
+  "version": "0.0.8",
+  "homepage": "https://github.com/zswang/jhtmls",
   "authors": [
     "Zswang <wjhu111@21cn.com>"
   ],
   "description": "JS and HTML alternate javascript template",
-  "main": "src/jhtmls.js",
+  "main": "dist/jhtmls.js",
   "moduleType": [
     "globals",
     "node"
@@ -18,7 +17,13 @@
     "html"
   ],
   "license": "MIT",
+  "devDependencies": {
+    "seajs": "2.3.0",
+    "requirejs": "2.1.15"
+  },
   "ignore": [
+    "tests",
+    "src",
     "**/.*",
     "node_modules",
     "bower_components",
@@ -26,32 +31,4 @@
     "test",
     "tests"
   ]
-=======
-	"name": "jhtmls",
-	"version": "0.0.7",
-	"homepage": "https://github.com/zswang/jhtmls",
-	"authors": [
-		"Zswang <wjhu111@21cn.com>"
-	],
-	"description": "JS and HTML alternate javascript template",
-	"main": "dist/jhtmls.js",
-	"moduleType": [
-		"globals",
-		"node"
-	],
-	"keywords": [
-		"javascript",
-		"template",
-		"html"
-	],
-	"license": "MIT",
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"app/components",
-		"test",
-		"tests"
-	]
->>>>>>> FETCH_HEAD
 }
