@@ -2,8 +2,13 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
+<<<<<<< HEAD
   "version": "0.0.5",
   "homepage": "http://jhtmls.com/",
+=======
+  "version": "0.0.7",
+  "homepage": "https://github.com/zswang/jhtmls",
+>>>>>>> FETCH_HEAD
   "main": "src/jhtmls.js",
   "author": {
     "name": "zswang",
@@ -31,7 +36,11 @@
   },
   "scripts": {
     "test": "mocha -R spec && npm run coverage",
+<<<<<<< HEAD
     "compress": "node build src/jhtmls.js dist/jhtmls.js && uglifyjs src/jhtmls.js -o dist/jhtmls.min.js --source-map dist/jhtmls.min.js.map -p 5 -c -m",
+=======
+    "dist": "uglifyjs src/jhtmls.js -o dist/jhtmls.min.js -p 5 -c -m",
+>>>>>>> FETCH_HEAD
     "lint": "jshint src/*.js *.json"
   }
 }

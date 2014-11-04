@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "jhtmls",
   "version": "0.0.5",
   "homepage": "http://jhtmls.com/",
@@ -25,4 +26,32 @@
     "test",
     "tests"
   ]
+=======
+	"name": "jhtmls",
+	"version": "0.0.7",
+	"homepage": "https://github.com/zswang/jhtmls",
+	"authors": [
+		"Zswang <wjhu111@21cn.com>"
+	],
+	"description": "JS and HTML alternate javascript template",
+	"main": "dist/jhtmls.js",
+	"moduleType": [
+		"globals",
+		"node"
+	],
+	"keywords": [
+		"javascript",
+		"template",
+		"html"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"app/components",
+		"test",
+		"tests"
+	]
+>>>>>>> FETCH_HEAD
 }
