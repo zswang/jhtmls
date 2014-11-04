@@ -3,7 +3,7 @@
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
   "version": "0.0.5",
-  "homepage": "https://github.com/zswang/jhtmls",
+  "homepage": "http://jhtmls.com/",
   "main": "src/jhtmls.js",
   "author": {
     "name": "zswang",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "mocha -R spec && npm run coverage",
-    "compress": "uglifyjs src/jhtmls.js -o dist/jhtmls.min.js --source-map dist/jhtmls.min.js.map -p 5 -c -m",
+    "compress": "node build src/jhtmls.js dist/jhtmls.js && uglifyjs src/jhtmls.js -o dist/jhtmls.min.js --source-map dist/jhtmls.min.js.map -p 5 -c -m",
     "lint": "jshint src/*.js *.json"
   }
 }
