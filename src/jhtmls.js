@@ -1,4 +1,4 @@
-void function(exportName) {
+(function(exportName) {
 
   'use strict';
 
@@ -114,7 +114,7 @@ void function(exportName) {
 
     if (typeof template === 'function') { // 函数多行注释处理
       template = String(template).replace(
-        /^[^\{]*\{\s*\/\*!?[ \f\t\v]*\n?|[ \f\t\v]*\*\/[;|\s]*\}$/g, // 替换掉函数前后部分
+        /[^]*\/\*!?\s*|\s*\*\/[^]*/g, // 替换掉函数前后部分
         ''
       );
     }
@@ -153,10 +153,12 @@ void function(exportName) {
         return exports;
       });
     }
-  } else if (typeof module !== 'undefined' && module.exports) {
+  }
+  else if (typeof module !== 'undefined' && module.exports) {
     module.exports = exports;
-  } else {
+  }
+  else {
     window[exportName] = exports;
   }
 
-}('jhtmls');
+})('jhtmls');
