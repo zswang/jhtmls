@@ -1,12 +1,10 @@
 {
   "name": "jhtmls",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "homepage": "https://github.com/zswang/jhtmls",
-  "authors": [
-    "Zswang <wjhu111@21cn.com>"
-  ],
+  "authors": "Zswang <wjhu111@21cn.com>",
   "description": "JS and HTML alternate javascript template",
-  "main": "src/jhtmls.js",
+  "main": "jhtmls.js",
   "moduleType": [
     "globals",
     "node"
