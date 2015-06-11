@@ -36,5 +36,8 @@ finally
 }
 hello world
 {  }
+var list = [
+  'a', 'b', 1
+];
 #{value1}
 $value2

@@ -31,10 +31,10 @@
    *     正则：/^[ \t]*[&=:|].*$/mg
    *   非 JS 字符开头
    *     示例：#、<div>、汉字
-   *     正则：/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$/mg
+   *     正则：/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$/mg
    *   不是 else 等单行语句
    *     示例：hello world
-   *     正则：/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$/mg
+   *     正则：/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$/mg
    * @param {String} template 模板字符
    * @return {Function} 返回编译后的函数
    */
@@ -48,7 +48,7 @@
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
       .replace(
-        /^([ \t]*[&=:|].*|[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():; \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\n|=&\/^?]+$)\s?/mg,
+        /^([ \t]*[&=:|].*|[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$)\s?/mg,
         function(expression) { // 输出原文
           // 处理空白字符
           expression = expression
@@ -84,9 +84,6 @@
       )
     );
     body.push('}');
-    /*<debug
-    console.log(body.join('')); /*
-    /debug>*/
     return new Function(
       '_output_', '_encode_', 'helper', 'jhtmls',
       body.join('')

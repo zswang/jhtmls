@@ -2,7 +2,7 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "http://jhtmls.com/",
   "main": "src/jhtmls.js",
   "author": {
