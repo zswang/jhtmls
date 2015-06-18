@@ -2,7 +2,7 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "homepage": "http://jhtmls.com/",
   "main": "src/jhtmls.js",
   "author": {
@@ -27,7 +27,7 @@
     "mocha": "2.0.1",
     "should": "4.1.0",
     "uglify-js": "2.4.15",
-    "jdists": "0.1.10",
+    "jdists": "0.7.7",
     "jshint": "2.5.8"
   },
   "scripts": {

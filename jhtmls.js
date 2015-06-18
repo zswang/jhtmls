@@ -1,8 +1,9 @@
-(function(exportName) {
+(function (exportName) {
   'use strict';
   var exports = exports || {};
   /**
-   * jhtmls
+   * @file jhtmls
+   *
    * 一套基于HTML和JS语法自由穿插的模板系统
    * @author 王集鹄(wangjihu,http://weibo.com/zswang) 鲁亚然(luyaran,http://weibo.com/zinkey)
    * @version 2014-05-21
@@ -19,13 +20,16 @@
    * @param {String} text 文本
    */
   function encodeHTML(text) {
-    return String(text).replace(/["<>& ]/g, function(all) {
+    return String(text).replace(/["<>& ]/g, function (all) {
       return '&' + htmlEncodeDict[all] + ';';
     });
   }
   /**
    * 构造模板的处理函数
    * 不是 JS 行的正则判断
+   *   碰见替换表达式
+   *     示例：title: #{title}
+   *     正则：/^.*#\{[^}]*\}.*$/mg
    *   特殊字符开通
    *     示例：&、=、:、|
    *     正则：/^[ \t]*[&=:|].*$/mg
@@ -42,14 +46,14 @@
     var body = [];
     body.push('with(this){');
     body.push(template
-      .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function(all) { // 处理<script>和<style>原样输出
+      .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function (all) { // 处理<script>和<style>原样输出
         return ['!#{unescape("', escape(all), '")}'].join('');
       })
       .replace(/[\r\n]+/g, '\n') // 去掉多余的换行，并且去掉IE中困扰人的\r
       .replace(/^\n+|\s+$/mg, '') // 去掉空行，首部空行，尾部空白
       .replace(
-        /^([ \t]*[&=:|].*|[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$|^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$)\s?/mg,
-        function(expression) { // 输出原文
+        /^(.*#\{[^}]*\}.*|[ \t]*[&=:|].*|[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$|(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$)\s?/mg,
+        function (expression) { // 输出原文
           // 处理空白字符
           expression = expression
             .replace(/&none;/g, '') // 空字符
@@ -57,7 +61,7 @@
           .replace(/\n/g, '\\n') // 处理回车转义符
           .replace( // #{expression} | $name
             /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
-            function(all, flag, value, flag2, value2) { // 变量替换
+            function (all, flag, value, flag2, value2) { // 变量替换
               if (flag2) { // 匹配 $name
                 flag = flag2;
                 value = value2;
@@ -109,11 +113,11 @@
      * @param{Object} d 数据
      * @param{Object} h 辅助对象 helper
      */
-    var format = function(d, h) {
+    var format = function (d, h) {
       // h = h || fn;
       var output = [];
       if (typeof h === 'undefined') {
-        h = function(d) {
+        h = function (d) {
           fn.call(d, output, encodeHTML, h, exports);
         };
       }
@@ -128,7 +132,7 @@
   exports.render = render;
   if (typeof define === 'function') {
     if (define.amd || define.cmd) {
-      define(function() {
+      define(function () {
         return exports;
       });
     }
