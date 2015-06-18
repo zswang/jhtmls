@@ -1,11 +1,12 @@
 (function (exportName) {
-  'use strict';
   var exports = exports || {};
   /**
    * @file jhtmls
    *
-   * 一套基于HTML和JS语法自由穿插的模板系统
-   * @author 王集鹄(wangjihu,http://weibo.com/zswang) 鲁亚然(luyaran,http://weibo.com/zinkey)
+   * 一套基于 HTML 和 JS 语法自由穿插的模板系统
+   * @author
+   *   王集鹄(WangJihu, http://weibo.com/zswang)
+   *   鲁亚然(LuYaran, http://weibo.com/zinkey)
    * @version 2014-05-21
    */
   var htmlEncodeDict = {
@@ -17,7 +18,9 @@
   };
   /**
    * HTML编码
-   * @param {String} text 文本
+   *
+   * @inner
+   * @param {string} text 文本
    */
   function encodeHTML(text) {
     return String(text).replace(/["<>& ]/g, function (all) {
@@ -26,6 +29,7 @@
   }
   /**
    * 构造模板的处理函数
+   *
    * 不是 JS 行的正则判断
    *   碰见替换表达式
    *     示例：title: #{title}
@@ -39,8 +43,10 @@
    *   不是 else 等单行语句
    *     示例：hello world
    *     正则：/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$/mg
-   * @param {String} template 模板字符
-   * @return {Function} 返回编译后的函数
+   *
+   * @inner
+   * @param {string} template 模板字符
+   * @return {function} 返回编译后的函数
    */
   function build(template) {
     var body = [];
@@ -95,10 +101,11 @@
   }
   /**
    * 格式化输出
-   * @param {String|Function} template 模板本身 或 模板放在函数行注释中
+   *
+   * @param {string|Function} template 模板本身 或 模板放在函数行注释中
    * @param {Object} data 格式化的数据，默认为空字符串
    * @param {Object} helper 附加数据(默认为渲染函数)
-   * @return {Function|String} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
+   * @return {Function|string} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
    */
   function render(template, data, helper) {
     if (typeof template === 'function') { // 函数多行注释处理
@@ -110,8 +117,10 @@
     var fn = build(template);
     /**
      * 格式化
-     * @param{Object} d 数据
-     * @param{Object} h 辅助对象 helper
+     *
+     * @inner
+     * @param {Object} d 数据
+     * @param {Object} h 辅助对象 helper
      */
     var format = function (d, h) {
       // h = h || fn;

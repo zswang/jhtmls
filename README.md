@@ -7,9 +7,39 @@
 
 ### jhtmls 是什么？
 
-Web 开发中，大部分的模板都是处理 HTML 格式。针对这一特性我们设计一个专门处理 HTML 格式的前端模板。
+jhtmls 是一个不使用标记符的 Javascript 模板引擎，通过分析每一行的特征，自动区分「逻辑部分」和「输出部分」
 
-`jhtmls` 会按行自动识别 JS 和 HTML 语法，所以不需要指定额外语法标记符（诸如：`<%%>`、`{{}}`）。这种设计是为了降低前端模板的学习和使用成本。
+> 举个栗子
+>```html
+<ul> 「输出部分」
+	forEach(function(item)) {「逻辑部分」
+		<li>「输出部分」
+			<a href="#{item.url}" title="#{item.desc}">#{item.title}</a>「输出部分」
+			if (item.photo) {「逻辑部分」
+				<img src="#{item.photo}">「输出部分」
+		  }「逻辑部分」
+		</li>「输出部分」
+	};「逻辑部分」
+</ul>「输出部分」
+>```
+
+### 如今这么多 Javascript 前端模板，jhtmls 存在的意义是什么？
+
+2011年 jhtmls 的前身 `AceTemplate` 就已经存在了，为方便迭代已从 AceEngine 项目中抽离出来。
+
+如果只处理 HTML 格式，那么采用 Javascript 和 HTML 语法自然穿插的方式，学习和使用成本都很低了。
+
+> 这种混插的方式与 JSX 类似。
+>```
+React.render(
+    <div>
+        <div>
+            <div>content</div>
+        </div>
+    </div>,
+    document.getElementById('example')
+);
+>```
 
 ### jhtmls 解决什么问题？
 
@@ -19,14 +49,13 @@ Web 开发中，大部分的模板都是处理 HTML 格式。针对这一特性�
 
 ### 安装
 
-`$npm install jhtmls`
-
-`$bower install jhtmls`
++ node 环境 `$ npm install jhtmls`
++ 浏览器环境 `$ bower install jhtmls`
 
 ### 引用
 
 ```javascript
-<script src="dist/jhtmls.min.js"></script>
+<script src="jhtmls.min.js"></script>
 ```
 
 ### 主要接口
@@ -34,10 +63,11 @@ Web 开发中，大部分的模板都是处理 HTML 格式。针对这一特性�
 ```javascript
 /**
  * 格式化输出
- * @param {String|Function} template 模板本身 或 模板放在函数行注释中
+ *
+ * @param {string|Function} template 模板本身 或 模板放在函数行注释中
  * @param {Object} data 格式化的数据，默认为空字符串
  * @param {Object} helper 附加数据(默认为渲染函数)
- * @return {Function|String} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
+ * @return {Function|string} 如果只有一个参数则返回渲染函数，否则返回格式化后的字符串
  */
 function render(template, data, helper) { ... }
 ```
@@ -74,94 +104,10 @@ document.getElementById('main').innerHTML = render(data);
 
 为了便于 `jhtmls` 的发展和维护，从 `AceEngine` 抽出 [AceTemplate](https://code.google.com/p/ace-engine/wiki/AceTemplate) 。
 
-## 语法识别情景
 
-### 赋值语句
+## 识别「输出部分」语法图
 
-```
-a = 1;
-b = 2
-```
+![][1]
 
-### 表达式
 
-```
-typeof a
-a / b
-```
-
-### 字符串
-
-```
-"双引号"
-'单引号'
-```
-
-### 双目运算
-```
-a ? b : c
-a && b ? c : 0
-a | b ? c : 0
-a ^ b ? c : 0
-```
-
-### 函数调用
-```
-a()
-b(a, c)
-```
-
-### 邮箱地址
-
-【命中】
-
-```
-admin@gmail.com
-jack.tang@cctv.cn
-```
-
-### 链接地址
-
-【命中】
-
-```
-http://www.baidu.com
-ftp://baidu.com/files
-```
-
-### 普通单词
-
-【命中】
-```
-hello
-red
-```
-
-### 语法单词
-
-```
-else
-do
-try
-finally
-```
-
-### 句子
-
-【命中】
-```
-hello world
-```
-
-### 语法
-
-```
-{  }
-```
-
-### 转义变量
-
-【命中】
-```
-#{value}
-```
+  [1]: http://divio.qiniudn.com/Fs9ikLJ0ncDZoKHPYPUR3kCK9i06
