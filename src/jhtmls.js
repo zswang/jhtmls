@@ -72,7 +72,10 @@
           // 处理空白字符
           expression = expression
             .replace(/&none;/g, '') // 空字符
-          .replace(/["'\\]/g, '\\$&') // 处理转义符
+          .replace(/(!?#)\{("([^\\"]*(\\.)*)*"|'([^\\']*(\\.)*)*'|[^}]*)\}/g, function (all, flag, value) {
+            return flag + '{' + value.replace(/\}/g, '\\x7d') + '}';
+          })
+            .replace(/["'\\]/g, '\\$&') // 处理转义符
           .replace(/\n/g, '\\n') // 处理回车转义符
           .replace( // #{expression} | $name
             /(!?#)\{(.*?)\}|(!?\$)([a-z_]+\w*(?:\.[a-z_]+\w*)*)/g,
@@ -84,7 +87,10 @@
               if (!value) {
                 return '';
               }
-              value = value.replace(/\\n/g, '\n').replace(/\\([\\'"])/g, '$1'); // 还原转义
+               // 还原转义
+              value = value.replace(/\\n/g, '\n')
+                .replace(/\\([\\'"])/g, '$1')
+                .replace(/\\x7d/g, '}');
 
               var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
                 !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
@@ -110,8 +116,8 @@
     body.push('}');
 
     /*<debug>
-    console.log(body.join('')); /*
-    </debug>*/
+    console.log(body.join(''));
+    //</debug>*/
     return new Function(
       '_output_', '_encode_', 'helper', 'jhtmls',
       body.join('')
