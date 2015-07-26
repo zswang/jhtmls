@@ -3,11 +3,11 @@
   /**
    * @file jhtmls
    *
-   * 一套基于 HTML 和 JS 语法自由穿插的模板系统
+   * JS and HTML alternate javascript template
    * @author
-   *   王集鹄(WangJihu, http://weibo.com/zswang)
-   *   鲁亚然(LuYaran, http://weibo.com/zinkey)
-   * @version 2014-05-21
+   *   zswang (http://weibo.com/zswang)
+   *   zinkey (http://weibo.com/zinkey)
+   * @version 0.1.7
    */
   var htmlEncodeDict = {
     '"': 'quot',
@@ -64,7 +64,7 @@
           expression = expression
             .replace(/&none;/g, '') // 空字符
           .replace(/(!?#)\{("([^\\"]*(\\.)*)*"|'([^\\']*(\\.)*)*'|[^}]*)\}/g, function (all, flag, value) {
-            return flag + '{' + value.replace(/\}/g, '\\x7d') + '}'
+            return flag + '{' + value.replace(/\}/g, '\\x7d') + '}';
           })
             .replace(/["'\\]/g, '\\$&') // 处理转义符
           .replace(/\n/g, '\\n') // 处理回车转义符
@@ -78,7 +78,7 @@
               if (!value) {
                 return '';
               }
-               // 还原转义
+              // 还原转义
               value = value.replace(/\\n/g, '\n')
                 .replace(/\\([\\'"])/g, '$1')
                 .replace(/\\x7d/g, '}');
@@ -101,7 +101,7 @@
     );
     body.push('}');
     return new Function(
-      '_output_', '_encode_', 'helper', 'jhtmls',
+      '_output_', '_encode_', 'helper', 'jhtmls', 'require',
       body.join('')
     );
   }
@@ -129,14 +129,18 @@
      * @param {Object} h 辅助对象 helper
      */
     var format = function (d, h) {
+      var _require;
+      if (typeof require === 'function') {
+        _require = require;
+      }
       // h = h || fn;
       var output = [];
       if (typeof h === 'undefined') {
         h = function (d) {
-          fn.call(d, output, encodeHTML, h, exports);
+          fn.call(d, output, encodeHTML, h, exports, _require);
         };
       }
-      fn.call(d, output, encodeHTML, h, exports);
+      fn.call(d, output, encodeHTML, h, exports, _require);
       return output.join('');
     };
     if (arguments.length <= 1) { // 无渲染数据

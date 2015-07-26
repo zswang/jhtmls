@@ -2,13 +2,16 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "http://jhtmls.com/",
-  "main": "src/jhtmls.js",
-  "author": {
+  "main": "jhtmls.js",
+  "author": [{
     "name": "zswang",
     "url": "http://weibo.com/zswang"
-  },
+  }, {
+    "name": "zinkey",
+    "url": "http://weibo.com/zinkey"
+  }],
   "repository": {
     "type": "git",
     "url": "https://github.com/zswang/jhtmls.git"

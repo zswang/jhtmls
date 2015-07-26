@@ -5,15 +5,18 @@
 
   var exports = exports || {};
 
+  /*<replace encoding="template" engine="ejs" data="../package.json">*/
   /**
-   * @file jhtmls
+   * @file <%- name %>
    *
-   * 一套基于 HTML 和 JS 语法自由穿插的模板系统
+   * <%- description %>
    * @author
-   *   王集鹄(WangJihu, http://weibo.com/zswang)
-   *   鲁亚然(LuYaran, http://weibo.com/zinkey)
-   * @version 2014-05-21
+       <% author.forEach(function (item) { %>
+   *   <%- item.name %> (<%- item.url %>)
+       <% }); %>
+   * @version <%- version %>
    */
+  /*</replace>*/
 
   var htmlEncodeDict = {
     '"': 'quot',
@@ -87,7 +90,7 @@
               if (!value) {
                 return '';
               }
-               // 还原转义
+              // 还原转义
               value = value.replace(/\\n/g, '\n')
                 .replace(/\\([\\'"])/g, '$1')
                 .replace(/\\x7d/g, '}');
@@ -119,7 +122,7 @@
     console.log(body.join(''));
     //</debug>*/
     return new Function(
-      '_output_', '_encode_', 'helper', 'jhtmls',
+      '_output_', '_encode_', 'helper', 'jhtmls', 'require',
       body.join('')
     );
   }
@@ -151,16 +154,21 @@
      * @param {Object} h 辅助对象 helper
      */
     var format = function (d, h) {
+      var _require;
+      if (typeof require === 'function') {
+        _require = require;
+      }
       // h = h || fn;
       var output = [];
       if (typeof h === 'undefined') {
         h = function (d) {
-          fn.call(d, output, encodeHTML, h, exports);
+          fn.call(d, output, encodeHTML, h, exports, _require);
         };
       }
-      fn.call(d, output, encodeHTML, h, exports);
+      fn.call(d, output, encodeHTML, h, exports, _require);
       return output.join('');
     };
+
 
     if (arguments.length <= 1) { // 无渲染数据
       return format;
