@@ -7,7 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 0.1.7
+   * @version 0.1.8
+   * @date 2015-08-09
    */
   var htmlEncodeDict = {
     '"': 'quot',
@@ -49,6 +50,13 @@
    * @return {function} 返回编译后的函数
    */
   function build(template) {
+    if (!template) {
+      return function () {
+        return '';
+      };
+    }
+    template = String(template).replace(/\r\n?|[\n\u2028\u2029]/g, '\n')
+      .replace(/^\uFEFF/, ''); // 数据清洗
     var body = [];
     body.push('with(this){');
     body.push(template
@@ -92,7 +100,7 @@
           );
           // 处理输出
           expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
-          if (expression) {
+          if (expression && expression !== "_encode_('')") {
             return ['_output_.push(', expression, ');'].join('');
           }
           return '';
@@ -100,6 +108,9 @@
       )
     );
     body.push('}');
+    /*<debug>
+    console.log(body.join(''));
+    //</debug>*/
     return new Function(
       '_output_', '_encode_', 'helper', 'jhtmls', 'require',
       body.join('')
