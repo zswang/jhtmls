@@ -7,7 +7,7 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 0.1.8
+   * @version 0.1.9
    * @date 2015-08-09
    */
   var htmlEncodeDict = {

@@ -121,7 +121,6 @@
 
           // 处理输出
           expression = ["'", expression, "'"].join('').replace(/^'',|,''$/g, ''); // 去掉多余的代码
-          console.log('expression: %j', expression);
           if (expression && expression !== "_encode_('')") {
             return ['_output_.push(', expression, ');'].join('');
           }
