@@ -3,10 +3,20 @@ var jhtmls = require('../.');
 var fs = require('fs');
 var util = require('util');
 
+/**
+ * 清除 \r，为兼容 Windows 下的文本换行符 CRLF
+ */
+function cleanCRLF(text) {
+  return String(text).replace(/\r\n?/g, '\n');
+}
+
 // coverage
 
 jhtmls.render()();
 jhtmls.render('\r');
+jhtmls.render("!#{'module.exports = require(\"./lib/' + name + '\");'}", {
+  name: 'jdists'
+});
 
 console.log(jhtmls.render(fixture('base.jhtmls'))());
 
@@ -114,8 +124,8 @@ describe('fixtures', function() {
   });
 
   items.forEach(function(item) {
-    var text_html = String(fs.readFileSync(util.format('test/fixtures/%s.html', item)));
-    var text_jhtmls = String(fs.readFileSync(util.format('test/fixtures/%s.jhtmls', item)));
+    var text_html = cleanCRLF(fs.readFileSync(util.format('test/fixtures/%s.html', item)));
+    var text_jhtmls = cleanCRLF(fs.readFileSync(util.format('test/fixtures/%s.jhtmls', item)));
 
     var file_json = util.format('test/fixtures/%s.json', item);
     var json;

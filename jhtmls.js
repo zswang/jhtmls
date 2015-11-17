@@ -7,8 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 0.1.9
-   * @date 2015-08-09
+   * @version 0.1.12
+   * @date 2015-11-17
    */
   var htmlEncodeDict = {
     '"': 'quot',
@@ -71,7 +71,7 @@
           // 处理空白字符
           expression = expression
             .replace(/&none;/g, '') // 空字符
-          .replace(/(!?#)\{("([^\\"]*(\\.)*)*"|'([^\\']*(\\.)*)*'|[^}]*)\}/g, function (all, flag, value) {
+          .replace(/(!?#)\{("([^\\"]|(\\.))*"|'([^\\']|(\\.))*'|[^}]*)\}/g, function (all, flag, value) {
             return flag + '{' + value.replace(/\}/g, '\\x7d') + '}';
           })
             .replace(/["'\\]/g, '\\$&') // 处理转义符

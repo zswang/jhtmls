@@ -85,11 +85,10 @@
       .replace(
         /^(.*#\{[^}]*\}.*|[ \t]*[&=:|].*|[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$|(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$)\s?/mg,
         function (expression) { // 输出原文
-
           // 处理空白字符
           expression = expression
             .replace(/&none;/g, '') // 空字符
-          .replace(/(!?#)\{("([^\\"]*(\\.)*)*"|'([^\\']*(\\.)*)*'|[^}]*)\}/g, function (all, flag, value) {
+          .replace(/(!?#)\{("([^\\"]|(\\.))*"|'([^\\']|(\\.))*'|[^}]*)\}/g, function (all, flag, value) {
             return flag + '{' + value.replace(/\}/g, '\\x7d') + '}';
           })
             .replace(/["'\\]/g, '\\$&') // 处理转义符
