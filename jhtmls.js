@@ -7,8 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 0.1.12
-   * @date 2015-11-17
+   * @version 0.1.13
+   * @date 2015-12-12
    */
   var htmlEncodeDict = {
     '"': 'quot',
@@ -72,7 +72,7 @@
           expression = expression
             .replace(/&none;/g, '') // 空字符
           .replace(/(!?#)\{("([^\\"]|(\\.))*"|'([^\\']|(\\.))*'|[^}]*)\}/g, function (all, flag, value) {
-            return flag + '{' + value.replace(/\}/g, '\\x7d') + '}';
+            return flag + '{' + value.replace(/\}/g, '\\x7d').replace(/\\/g, '\\x5c') + '}';
           })
             .replace(/["'\\]/g, '\\$&') // 处理转义符
           .replace(/\n/g, '\\n') // 处理回车转义符
@@ -89,7 +89,8 @@
               // 还原转义
               value = value.replace(/\\n/g, '\n')
                 .replace(/\\([\\'"])/g, '$1')
-                .replace(/\\x7d/g, '}');
+                .replace(/\\x7d/g, '}')
+                .replace(/\\x5c/g, '\\');
               var identifier = /^[a-z$][\w+$]+$/i.test(value) &&
                 !(/^(true|false|NaN|null|this)$/.test(value)); // 单纯变量，加一个未定义保护
               return ["',",
