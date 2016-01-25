@@ -1,6 +1,5 @@
 <ul>
 forEach(function(item) {
-  <li><em>$item.id</em>city: $item.city, distance: $item.distance, hint: !$item.hint</li>
-
+  <li><em>#{item.id}</em>city: #{item.city}, distance: #{item.distance}, hint: !#{item.hint}</li>
 });
 </ul>

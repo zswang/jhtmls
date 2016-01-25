@@ -18,8 +18,6 @@ jhtmls.render("!#{'module.exports = require(\"./lib/' + name + '\");'}", {
   name: 'jdists'
 });
 
-console.log(jhtmls.render(fixture('base.jhtmls'))());
-
 function fixture(name) {
   return fs.readFileSync('test/fixtures/' + name, 'utf8').replace(/\r/g, '');
 }
@@ -40,39 +38,6 @@ describe('render(String, Object)', function() {
 });
 
 describe('render(Function, Object)', function() {
-  it('函数注释模板，处理 $ 简写', function() {
-    var render = jhtmls.render(function() {/*!
-<li><a href="$url">$title - $data.length</a></li>
-    */});
-    assert.equal(
-      '<li><a href="http://www.baidu.com">baidu - 5</a></li>',
-      render({
-        title: 'baidu',
-        url: 'http://www.baidu.com',
-        data: {
-          length: 5
-        }
-      })
-    );
-  });
-
-  it('函数注释模板，处理 $ 、# 混用', function() {
-    var render = jhtmls.render(function() {/*!
-var $length = data.length;
-<li><a href="$url">$title - #{$length * 5}</a></li>
-    */});
-    assert.equal(
-      '<li><a href="http://www.baidu.com">baidu - 25</a></li>',
-      render({
-        title: 'baidu',
-        url: 'http://www.baidu.com',
-        data: {
-          length: 5
-        }
-      })
-    );
-  });
-
   it('函数注释模板，处理换行', function() {
     var render = jhtmls.render(function() {/*!
 <li><a href="#{url}">#{title}</a></li>
