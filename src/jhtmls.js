@@ -223,7 +223,7 @@
         if (index < array.length - 1) {
           expressions.push('"\\n"');
         }
-        return '_output_.push(' + expressions + ');'
+        return '_output_.push(' + expressions + ');';
       }
       else {
         return line;
