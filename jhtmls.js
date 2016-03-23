@@ -7,9 +7,10 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 1.0.0
-   * @date 2016-01-26
+   * @version 1.0.1
+   * @date 2016-03-23
    */
+  /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
     '"': 'quot',
     '<': 'lt',
@@ -20,14 +21,21 @@
   /**
    * HTML编码
    *
-   * @inner
    * @param {string} text 文本
+   '''<example>'''
+   * @example encodeHTML():base
+    ```js
+    console.log(jstrs.encodeHTML('1 < 2'));
+    // > 1&nbsp;&lt;&nbsp;2
+    ```
+   '''</example>'''
    */
   function encodeHTML(text) {
-    return String(text).replace(/["<>& ]/g, function (all) {
+    return String(text).replace(/["<>& ]/g, function(all) {
       return '&' + htmlEncodeDict[all] + ';';
     });
   }
+  /*</function>*/
   /**
    * 是否行是否输出
    *

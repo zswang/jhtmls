@@ -24,25 +24,11 @@
    */
   /*</jdists>*/
 
-  var htmlEncodeDict = {
-    '"': 'quot',
-    '<': 'lt',
-    '>': 'gt',
-    '&': 'amp',
-    ' ': 'nbsp'
-  };
-
-  /**
-   * HTML编码
-   *
-   * @inner
-   * @param {string} text 文本
-   */
-  function encodeHTML(text) {
-    return String(text).replace(/["<>& ]/g, function (all) {
-      return '&' + htmlEncodeDict[all] + ';';
-    });
-  }
+  /*<jdists encoding="fndep" import="../node_modules/jstrs/jstrs.js"
+    depend="encodeHTML">*/
+  var jstrs = require('jstrs');
+  var encodeHTML = jstrs.encodeHTML;
+  /*</jdists>*/
 
   /**
    * 是否行是否输出
