@@ -1,35 +1,3 @@
-(function (exportName) {
-  /*<remove>*/
-  'use strict';
-  /*</remove>*/
-
-  var exports = exports || {};
-
-  /*<jdists encoding="ejs" data="../package.json">*/
-  /**
-   * @file <%- name %>
-   *
-   * <%- description %>
-   * @author
-       <% (author instanceof Array ? author : [author]).forEach(function (item) { %>
-   *   <%- item.name %> (<%- item.url %>)
-       <% }); %>
-   * @version <%- version %>
-       <% var now = new Date() %>
-   * @date <%- [
-        now.getFullYear(),
-        now.getMonth() + 101,
-        now.getDate() + 100
-      ].join('-').replace(/-1/g, '-') %>
-   */
-  /*</jdists>*/
-
-  /*<jdists encoding="fndep" import="../node_modules/jstrs/jstrs.js"
-    depend="encodeHTML">*/
-  var jstrs = require('jstrs');
-  var encodeHTML = jstrs.encodeHTML;
-  /*</jdists>*/
-
   /*<function name="jhtmls_isOutput">*/
   /**
    * 是否行是否输出
@@ -120,19 +88,16 @@
     if (/^.*#\{[^}]*\}.*$/.test(line)) {
       return true;
     }
-
     // 特殊字符开头
     // 示例：&、=、:、|
     if (/^[ \t]*[&=:|].*$/.test(line)) {
       return true;
     }
-
     // 非 JavaScript 字符开头
     // 示例：#、<div>、汉字
     if (/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$/.test(line)) {
       return true;
     }
-
     // 不是 else 等单行语句
     // 示例：hello world
     if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$/.test(line)) {
@@ -141,12 +106,6 @@
     return false;
   }
   /*</function>*/
-  exports.isOutput = jhtmls_isOutput;
-
-  /*<remove>
-  console.log(jhtmls_isOutput('do'));
-  </remove>*/
-
   /*<function name="jhtmls_build" depend="jhtmls_isOutput">*/
   /**
    * 构造模板的处理函数
@@ -172,7 +131,6 @@
         return '';
       };
     }
-
     var lines = String(template).split(/\n\r?/).map(function (line, index, array) {
       if (/^\s*$/.test(line)) {
         return line;
@@ -190,7 +148,6 @@
             if (!value) {
               return;
             }
-
             // 单纯变量，加一个未定义保护
             if (/^[a-z$][\w+$]+$/i.test(value) &&
               !(/^(true|false|NaN|null|this)$/.test(value))) {
@@ -220,22 +177,38 @@
     });
     lines.unshift('with(this){');
     lines.push('}');
-
-    /*<remove>
-    console.log(lines.join(''));
-    //</remove>*/
     return new Function(
       '_output_', '_encode_', 'helper', 'jhtmls', 'require',
       lines.join('\n')
     );
   }
   /*</function>*/
-  exports.build = jhtmls_build;
-
-  /*<remove>
-  console.log(build('a#{{a:1}[a]}c'));
-  //</remove>*/
-
+  /*<function name="encodeHTML">*/
+  var htmlEncodeDict = {
+    '"': 'quot',
+    '<': 'lt',
+    '>': 'gt',
+    '&': 'amp',
+    ' ': 'nbsp'
+  };
+  /**
+   * HTML编码
+   *
+   * @param {string} text 文本
+   '''<example>'''
+   * @example encodeHTML():base
+    ```js
+    console.log(jstrs.encodeHTML('1 < 2'));
+    // > 1&nbsp;&lt;&nbsp;2
+    ```
+   '''</example>'''
+   */
+  function encodeHTML(text) {
+    return String(text).replace(/["<>& ]/g, function(all) {
+      return '&' + htmlEncodeDict[all] + ';';
+    });
+  }
+  /*</function>*/
   /*<function name="jhtmls_render" depend="jhtmls_build,encodeHTML">*/
   /**
    * 格式化输出
@@ -263,16 +236,13 @@
    '''</example>'''
    */
   function jhtmls_render(template, data, helper) {
-
     if (typeof template === 'function') { // 函数多行注释处理
       template = String(template).replace(
         /[^]*\/\*!?\s*|\s*\*\/[^]*/g, // 替换掉函数前后部分
         ''
       );
     }
-
     var fn = jhtmls_build(template);
-
     /**
      * 格式化
      *
@@ -295,34 +265,10 @@
       fn.call(d, output, encodeHTML, h, exports, _require);
       return output.join('');
     };
-
-
     if (arguments.length <= 1) { // 无渲染数据
       return format;
     }
-
     return format(data, helper);
   }
   /*</function>*/
-
-  /*<remove>
-  console.log(jhtmls_render('#{}', {}));
-  //</remove>*/
-
-  exports.render = jhtmls_render;
-
-  if (typeof define === 'function') {
-    if (define.amd || define.cmd) {
-      define(function () {
-        return exports;
-      });
-    }
-  }
-  else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = exports;
-  }
-  else {
-    window[exportName] = exports;
-  }
-
-})('jhtmls');
+console.log(jhtmls_render('#{this}', '<br>'));

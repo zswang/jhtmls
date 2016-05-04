@@ -7,8 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 1.0.1
-   * @date 2016-03-23
+   * @version 1.0.2
+   * @date 2016-05-04
    */
   /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
@@ -36,6 +36,7 @@
     });
   }
   /*</function>*/
+  /*<function name="jhtmls_isOutput">*/
   /**
    * 是否行是否输出
    *
@@ -119,7 +120,7 @@
     ```
    '''</example>'''
    */
-  function isOutput(line) {
+  function jhtmls_isOutput(line) {
     // 碰见替换表达式
     // 示例：title: #{title}
     if (/^.*#\{[^}]*\}.*$/.test(line)) {
@@ -142,7 +143,9 @@
     }
     return false;
   }
-  exports.isOutput = isOutput;
+  /*</function>*/
+  exports.isOutput = jhtmls_isOutput;
+  /*<function name="jhtmls_build" depend="jhtmls_isOutput">*/
   /**
    * 构造模板的处理函数
    *
@@ -161,7 +164,7 @@
     ```
    '''</example>'''
    */
-  function build(template) {
+  function jhtmls_build(template) {
     if (!template) {
       return function () {
         return '';
@@ -171,7 +174,7 @@
       if (/^\s*$/.test(line)) {
         return line;
       }
-      else if (isOutput(line)) {
+      else if (jhtmls_isOutput(line)) {
         var expressions = [];
         var offset = 0;
         line.replace(/(!?#)\{((?:"(?:[^\\"]|(?:\\.))*"|'(?:[^\\']|(?:\\.))*'|(?:[^{}]*\{[^}]*\})?|[^}]*)*)\}/g,
@@ -218,7 +221,9 @@
       lines.join('\n')
     );
   }
-  exports.build = build;
+  /*</function>*/
+  exports.build = jhtmls_build;
+  /*<function name="jhtmls_render" depend="jhtmls_build,encodeHTML">*/
   /**
    * 格式化输出
    *
@@ -244,14 +249,14 @@
     ```
    '''</example>'''
    */
-  function render(template, data, helper) {
+  function jhtmls_render(template, data, helper) {
     if (typeof template === 'function') { // 函数多行注释处理
       template = String(template).replace(
         /[^]*\/\*!?\s*|\s*\*\/[^]*/g, // 替换掉函数前后部分
         ''
       );
     }
-    var fn = build(template);
+    var fn = jhtmls_build(template);
     /**
      * 格式化
      *
@@ -279,7 +284,8 @@
     }
     return format(data, helper);
   }
-  exports.render = render;
+  /*</function>*/
+  exports.render = jhtmls_render;
   if (typeof define === 'function') {
     if (define.amd || define.cmd) {
       define(function () {
