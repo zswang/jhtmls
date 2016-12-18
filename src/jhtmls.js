@@ -25,7 +25,7 @@
   /*</jdists>*/
 
   /*<jdists encoding="fndep" import="../node_modules/jstrs/jstrs.js"
-    depend="encodeHTML">*/
+    depend="encodeHTML" trigger="release">*/
   var jstrs = require('jstrs');
   var encodeHTML = jstrs.encodeHTML;
   /*</jdists>*/
@@ -157,12 +157,12 @@
    * @example build():base
     ```js
     console.log(typeof jhtmls.build('print: #{name}'));
-    // > "function"
+    // > function
     ```
    * @example build():Empty string
     ```js
     console.log(typeof jhtmls.build(''));
-    // > "function"
+    // > function
     ```
    '''</example>'''
    */
@@ -248,17 +248,24 @@
    * @example render():Build Function
     ```js
     console.log(typeof jhtmls.render('print: #{name}'));
-    // > "function"
+    // > function
     ```
    * @example render():Format String
     ```js
     console.log(jhtmls.render('print: #{name}', { name: 'zswang' }));
-    // > "print: zswang"
+    // > print: zswang
     ```
-   * @example render():this
+   * @example render():this & require is null
     ```js
     console.log(jhtmls.render('print: #{this}', 2016));
-    // > "print: 2016"
+    // > print: 2016
+    ```
+   * @example render():encodeHTML
+    ```js
+    console.log(jhtmls.render('print: #{this}', '\' "'));
+    // > print: &#39; &#34;
+    console.log(jhtmls.render('print: !#{this}', '\' "'));
+    // > print: ' "
     ```
    '''</example>'''
    */
@@ -282,6 +289,7 @@
      */
     var format = function (d, h) {
       var _require;
+      /* istanbul ignore else */
       if (typeof require === 'function') {
         _require = require;
       }
@@ -311,6 +319,7 @@
 
   exports.render = jhtmls_render;
 
+  /* istanbul ignore next */
   if (typeof define === 'function') {
     if (define.amd || define.cmd) {
       define(function () {

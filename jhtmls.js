@@ -7,16 +7,17 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 1.0.2
-   * @date 2016-05-04
+   * @version 1.1.1
+   * @date 2016-12-19
    */
   /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
-    '"': 'quot',
+    '"': '#34',
+    "'": '#39',
     '<': 'lt',
     '>': 'gt',
     '&': 'amp',
-    ' ': 'nbsp'
+    ' ': 'nbsp'
   };
   /**
    * HTML编码
@@ -25,13 +26,13 @@
    '''<example>'''
    * @example encodeHTML():base
     ```js
-    console.log(jstrs.encodeHTML('1 < 2'));
-    // > 1&nbsp;&lt;&nbsp;2
+    console.log(jstrs.encodeHTML('\'1\' < "2"'));
+    // > &#39;1&#39;&nbsp;&lt;&nbsp;&#34;2&#34;
     ```
    '''</example>'''
    */
   function encodeHTML(text) {
-    return String(text).replace(/["<>& ]/g, function(all) {
+    return String(text).replace(/["<>& ']/g, function (all) {
       return '&' + htmlEncodeDict[all] + ';';
     });
   }
@@ -155,12 +156,12 @@
    * @example build():base
     ```js
     console.log(typeof jhtmls.build('print: #{name}'));
-    // > "function"
+    // > function
     ```
    * @example build():Empty string
     ```js
     console.log(typeof jhtmls.build(''));
-    // > "function"
+    // > function
     ```
    '''</example>'''
    */
@@ -235,17 +236,24 @@
    * @example render():Build Function
     ```js
     console.log(typeof jhtmls.render('print: #{name}'));
-    // > "function"
+    // > function
     ```
    * @example render():Format String
     ```js
     console.log(jhtmls.render('print: #{name}', { name: 'zswang' }));
-    // > "print: zswang"
+    // > print: zswang
     ```
-   * @example render():this
+   * @example render():this & require is null
     ```js
     console.log(jhtmls.render('print: #{this}', 2016));
-    // > "print: 2016"
+    // > print: 2016
+    ```
+   * @example render():encodeHTML
+    ```js
+    console.log(jhtmls.render('print: #{this}', '\' "'));
+    // > print: &#39; &#34;
+    console.log(jhtmls.render('print: !#{this}', '\' "'));
+    // > print: ' "
     ```
    '''</example>'''
    */
@@ -266,6 +274,7 @@
      */
     var format = function (d, h) {
       var _require;
+      /* istanbul ignore else */
       if (typeof require === 'function') {
         _require = require;
       }
@@ -286,6 +295,7 @@
   }
   /*</function>*/
   exports.render = jhtmls_render;
+  /* istanbul ignore next */
   if (typeof define === 'function') {
     if (define.amd || define.cmd) {
       define(function () {

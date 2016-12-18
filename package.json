@@ -2,7 +2,7 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "homepage": "http://jhtmls.com/",
   "main": "jhtmls.js",
   "author": [
@@ -30,23 +30,25 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "mocha": "^2.0.1",
+    "gulp": "^3.9.0",
+    "gulp-examplejs": "^0.0.5",
+    "gulp-jdists": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3",
     "istanbul": "^0.3.17",
-    "should": "^4.1.0",
-    "uglify-js": "^2.4.15",
-    "jdists": "^1.3.3",
+    "mocha": "^2.0.1",
     "jshint": "^2.5.8",
-    "jstrs": "^0.0.1"
+    "jstrs": "^0.1.1",
+    "should": "^4.1.0"
   },
   "scripts": {
-    "_update_version": "jdists version.jdists",
-    "_dist": "jdists src/jhtmls.js -o jhtmls.js",
-    "_compress": "uglifyjs jhtmls.js -o jhtmls.min.js -p 5 -c -m",
-    "example": "jdists example.jdists.js -o test/example.js",
-    "mocha": "mocha",
+    "_update_version": "node version.js",
+    "_dist": "gulp",
+    "lint": "jshint src/*.js",
     "test": "istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
-    "dist": "npm run _update_version && npm run _dist && npm run _compress && npm run example && npm run test",
-    "lint": "jshint src/*.js"
+    "example": "gulp example",
+    "mocha": "mocha",
+    "dist": "npm run _update_version && npm run example && npm run _dist && npm run test"
   },
   "files": [
     "jhtmls.js",
