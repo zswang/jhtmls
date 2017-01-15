@@ -7,8 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 1.1.1
-   * @date 2016-12-19
+   * @version 1.1.3
+   * @date 2017-01-16
    */
   /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
@@ -189,7 +189,7 @@
               return;
             }
             // 单纯变量，加一个未定义保护
-            if (/^[a-z$][\w+$]+$/i.test(value) &&
+            if (/^[a-z$][\w$]+$/i.test(value) &&
               !(/^(true|false|NaN|null|this)$/.test(value))) {
               value = 'typeof ' + value + "==='undefined'?'':" + value;
             }
