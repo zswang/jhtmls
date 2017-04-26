@@ -7,8 +7,8 @@
    * @author
    *   zswang (http://weibo.com/zswang)
    *   zinkey (http://weibo.com/zinkey)
-   * @version 1.1.3
-   * @date 2017-01-16
+   * @version 1.1.11
+   * @date 2017-04-26
    */
   /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
@@ -119,6 +119,31 @@
     console.log(jhtmls.isOutput('hello'));
     // > true
     ```
+   * @example isOutput():No semicolon "foo()"
+    ```js
+    console.log(jhtmls.isOutput('foo()'));
+    // > false
+    ```
+   * @example isOutput():Not symbol "return !todo.completed"
+    ```js
+    console.log(jhtmls.isOutput('return !todo.completed'));
+    // > false
+    ```
+   * @example isOutput():Strings Template "`${name}`"
+    ```js
+    console.log(jhtmls.isOutput('`${name}`'));
+    // > false
+    ```
+   * @example isOutput():Strings Template "\`\`\`js"
+    ```js
+    console.log(jhtmls.isOutput('\`\`\`js'));
+    // > true
+    ```
+   * @example isOutput():Url "http://jhtmls.com/"
+    ```js
+    console.log(jhtmls.isOutput('http://jhtmls.com/'));
+    // > true
+    ```
    '''</example>'''
    */
   function jhtmls_isOutput(line) {
@@ -134,12 +159,16 @@
     }
     // 非 JavaScript 字符开头
     // 示例：#、<div>、汉字
-    if (/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;, \t=\.$_]|:\/\/).*$/.test(line)) {
+    if (/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():;,!` \t=\.$_]|:\/\/).*$/.test(line)) {
+      return true;
+    }
+    // ```
+    if (/^\s*[`\-+'"]{3,}/.test(line)) {
       return true;
     }
     // 不是 else 等单行语句
     // 示例：hello world
-    if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'":;{}()\[\],\n|=&\/^?]+$/.test(line)) {
+    if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:;{}()\[\],\n|=&\/^?]+$/.test(line)) {
       return true;
     }
     return false;

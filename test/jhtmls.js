@@ -83,6 +83,31 @@ describe("src/jhtmls.js", function () {
     examplejs_print(jhtmls.isOutput('hello'));
     assert.equal(examplejs_printLines.join("\n"), "true"); examplejs_printLines = [];
   });
+  it("isOutput():No semicolon \"foo()\"", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('foo()'));
+    assert.equal(examplejs_printLines.join("\n"), "false"); examplejs_printLines = [];
+  });
+  it("isOutput():Not symbol \"return !todo.completed\"", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('return !todo.completed'));
+    assert.equal(examplejs_printLines.join("\n"), "false"); examplejs_printLines = [];
+  });
+  it("isOutput():Strings Template \"`${name}`\"", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('`${name}`'));
+    assert.equal(examplejs_printLines.join("\n"), "false"); examplejs_printLines = [];
+  });
+  it("isOutput():Strings Template \"\\`\\`\\`js\"", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('\`\`\`js'));
+    assert.equal(examplejs_printLines.join("\n"), "true"); examplejs_printLines = [];
+  });
+  it("isOutput():Url \"http://jhtmls.com/\"", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('http://jhtmls.com/'));
+    assert.equal(examplejs_printLines.join("\n"), "true"); examplejs_printLines = [];
+  });
   it("build():base", function() {
     examplejs_printLines = [];
     examplejs_print(typeof jhtmls.build('print: #{name}'));
