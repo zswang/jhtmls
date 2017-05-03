@@ -47,6 +47,11 @@
     console.log(jhtmls.isOutput('print: !#{$title}'));
     // > true
     ```
+   * @example isOutput():number
+    ```js
+    console.log(jhtmls.isOutput('8848'));
+    // > true
+    ```
    * @example isOutput():Begin "&"
     ```js
     console.log(jhtmls.isOutput('& 8848'));
@@ -168,6 +173,7 @@
     if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:;{}()\[\],\n|=&\/^?]+$/.test(line)) {
       return true;
     }
+
     return false;
   }
   /*</function>*/
@@ -318,11 +324,6 @@
      * @param {Object} h 辅助对象 helper
      */
     var format = function (d, h) {
-      var _require;
-      /* istanbul ignore else */
-      if (typeof require === 'function') {
-        _require = require;
-      }
       // h = h || fn;
       var output = [];
       if (typeof h === 'undefined') {

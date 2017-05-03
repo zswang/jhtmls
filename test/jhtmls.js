@@ -18,6 +18,11 @@ describe("src/jhtmls.js", function () {
     examplejs_print(jhtmls.isOutput('print: !#{$title}'));
     assert.equal(examplejs_printLines.join("\n"), "true"); examplejs_printLines = [];
   });
+  it("isOutput():number", function() {
+    examplejs_printLines = [];
+    examplejs_print(jhtmls.isOutput('8848'));
+    assert.equal(examplejs_printLines.join("\n"), "true"); examplejs_printLines = [];
+  });
   it("isOutput():Begin \"&\"", function() {
     examplejs_printLines = [];
     examplejs_print(jhtmls.isOutput('& 8848'));

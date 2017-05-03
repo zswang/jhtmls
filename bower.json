@@ -1,6 +1,6 @@
 {
   "name": "jhtmls",
-  "version": "1.2.1",
+  "version": "1.2.6",
   "homepage": "https://github.com/zswang/jhtmls",
   "description": "JS and HTML alternate javascript template",
   "main": "jhtmls.js",

@@ -6,7 +6,7 @@
    * JS and HTML alternate javascript template
    * @author
    *   zswang (http://weibo.com/zswang)
-   * @version 1.2.1
+   * @version 1.2.6
    * @date 2017-05-03
    */
   /*<function name="encodeHTML">*/
@@ -51,6 +51,11 @@
    * @example isOutput():expression 2
     ```js
     console.log(jhtmls.isOutput('print: !#{$title}'));
+    // > true
+    ```
+   * @example isOutput():number
+    ```js
+    console.log(jhtmls.isOutput('8848'));
     // > true
     ```
    * @example isOutput():Begin "&"
@@ -301,11 +306,6 @@
      * @param {Object} h 辅助对象 helper
      */
     var format = function (d, h) {
-      var _require;
-      /* istanbul ignore else */
-      if (typeof require === 'function') {
-        _require = require;
-      }
       // h = h || fn;
       var output = [];
       if (typeof h === 'undefined') {
