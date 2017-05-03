@@ -255,7 +255,7 @@
     console.log(lines.join(''));
     //</remove>*/
     return new Function(
-      '_output_', '_encode_', 'helper', 'jhtmls', 'require',
+      '_output_', '_encode_', 'helper',
       lines.join('\n')
     );
   }
@@ -327,10 +327,10 @@
       var output = [];
       if (typeof h === 'undefined') {
         h = function (d) {
-          fn.call(d, output, encodeHTML, h, exports, _require);
+          fn.call(d, output, encodeHTML, h);
         };
       }
-      fn.call(d, output, encodeHTML, h, exports, _require);
+      fn.call(d, output, encodeHTML, h);
       return output.join('');
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "jhtmls",
-  "version": "1.1.11",
+  "version": "1.2.1",
   "homepage": "https://github.com/zswang/jhtmls",
   "description": "JS and HTML alternate javascript template",
   "main": "jhtmls.js",
@@ -28,14 +28,8 @@
     "test",
     "tests"
   ],
-  "author": [
-    {
-      "name": "zswang",
-      "url": "http://weibo.com/zswang"
-    },
-    {
-      "name": "zinkey",
-      "url": "http://weibo.com/zinkey"
-    }
-  ]
+  "author": {
+    "name": "zswang",
+    "url": "http://weibo.com/zswang"
+  }
 }

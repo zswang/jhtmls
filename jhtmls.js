@@ -6,9 +6,8 @@
    * JS and HTML alternate javascript template
    * @author
    *   zswang (http://weibo.com/zswang)
-   *   zinkey (http://weibo.com/zinkey)
-   * @version 1.1.11
-   * @date 2017-04-26
+   * @version 1.2.1
+   * @date 2017-05-03
    */
   /*<function name="encodeHTML">*/
   var htmlEncodeDict = {
@@ -247,7 +246,7 @@
     lines.unshift('with(this){');
     lines.push('}');
     return new Function(
-      '_output_', '_encode_', 'helper', 'jhtmls', 'require',
+      '_output_', '_encode_', 'helper',
       lines.join('\n')
     );
   }
@@ -311,10 +310,10 @@
       var output = [];
       if (typeof h === 'undefined') {
         h = function (d) {
-          fn.call(d, output, encodeHTML, h, exports, _require);
+          fn.call(d, output, encodeHTML, h);
         };
       }
-      fn.call(d, output, encodeHTML, h, exports, _require);
+      fn.call(d, output, encodeHTML, h);
       return output.join('');
     };
     if (arguments.length <= 1) { // 无渲染数据

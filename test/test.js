@@ -2,6 +2,7 @@ var assert = require('should');
 var jhtmls = require('../.');
 var fs = require('fs');
 var util = require('util');
+global.require = require;
 
 /**
  * 清除 \r，为兼容 Windows 下的文本换行符 CRLF
