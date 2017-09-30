@@ -1,25 +1,51 @@
 /*jshint globalstrict: true*/
 /*global require*/
 
-'use strict';
+'use strict'
 
-var gulp = require('gulp');
-var util = require('util');
-var jdists = require('gulp-jdists');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var examplejs = require('gulp-examplejs');
+const gulp = require('gulp')
+const util = require('util')
+const jdists = require('gulp-jdists')
+const uglify = require('gulp-uglify')
+const rename = require('gulp-rename')
+const examplejs = require('gulp-examplejs')
+const replace = require('gulp-replace')
+const typescript = require('gulp-typescript')
+const merge2 = require('merge2')
+const pkg = require('./package')
 
-gulp.task('build', function() {
-  return gulp.src(['src/jhtmls.js'])
-    .pipe(jdists({
-      trigger: 'release'
+gulp.task('build', function () {
+  var tsResult = gulp.src('src/*.ts')
+    .pipe(jdists())
+    .pipe(gulp.dest('lib'))
+    .pipe(typescript({
+      target: 'ES5',
+      declaration: true,
+      module: 'umd',
     }))
-    .pipe(gulp.dest('./'))
+
+  return merge2([
+    tsResult.dts.pipe(gulp.dest('lib')),
+    tsResult.js
+      .pipe(replace(
+        /(\(function\s*\()(factory\)\s*\{)/, '$1root, $2\n    /* istanbul ignore next */'
+      ))
+      .pipe(replace(
+        /(define\(\["require",\s*"exports"\],\s*factory\);\s*\})/, '$1 else { factory(null, root["' + pkg.name + '"] = {}); }'
+      ))
+      .pipe(replace(
+        /(\s*\}\s*\)\s*\()(function\s*\(require,\s*exports\)\s*\{)/, '$1this, $2'
+      ))
+      .pipe(gulp.dest('lib'))
+  ])
+})
+
+gulp.task('uglify', function () {
+  gulp.src(`lib/${pkg.name}.js`)
     .pipe(uglify())
-    .pipe(rename('jhtmls.min.js'))
-    .pipe(gulp.dest('./'));
-});
+    .pipe(rename(`${pkg.name}.min.js`))
+    .pipe(gulp.dest('lib'))
+})
 
 gulp.task('example', function() {
   return gulp.src('src/**.js')
@@ -27,9 +53,9 @@ gulp.task('example', function() {
       trigger: 'example'
     }))
     .pipe(examplejs({
-      header: "var jhtmls = require('../');\n"
+      header: "const jhtmls = require('../')\n"
     }))
-    .pipe(gulp.dest('test'));
-});
+    .pipe(gulp.dest('test'))
+})
 
-gulp.task('default', ['build']);
+gulp.task('dist', ['build', 'example', 'uglify'])

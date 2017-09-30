@@ -1,9 +1,9 @@
 {
   "name": "jhtmls",
-  "version": "1.2.6",
+  "version": "2.0.0",
   "homepage": "https://github.com/zswang/jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "main": "jhtmls.js",
+  "main": "lib/jhtmls.js",
   "moduleType": [
     "globals",
     "node"
