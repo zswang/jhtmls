@@ -39,7 +39,6 @@
     "gulp-typescript": "^3.2.2",
     "gulp-uglify": "^1.5.3",
     "istanbul": "^0.3.17",
-    "jshint": "^2.5.8",
     "jstrs": "^1.0.3",
     "merge2": "^1.2.0",
     "mocha": "^2.0.1",
@@ -49,7 +48,6 @@
   "scripts": {
     "_update_version": "node version.js",
     "_dist": "gulp dist",
-    "lint": "jshint src/*.js",
     "test": "istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
     "example": "gulp example",
     "mocha": "npm run example && mocha",
