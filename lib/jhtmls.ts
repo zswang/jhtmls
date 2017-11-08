@@ -4,7 +4,7 @@
  * Unmarked front-end template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.3
+ * @version 2.0.5
  * @date 2017-11-08
  */
 export interface IRender {
