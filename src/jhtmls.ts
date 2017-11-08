@@ -17,7 +17,6 @@
  */
 /*</jdists>*/
 
-
 export interface IRender {
   (data: any, helper?: any): string
 }
@@ -307,7 +306,7 @@ import { encodeHTML } from 'jstrs'
   ```
  '''</example>'''
  */
-function jhtmls_render(template: string | Function, data: any, helper: any): string | IRender {
+function jhtmls_render(template: string | Function, data?: any, helper?: any): string | IRender {
 
   if (typeof template === 'function') { // 函数多行注释处理
     template = String(template).replace(

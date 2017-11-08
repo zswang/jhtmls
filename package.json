@@ -2,7 +2,7 @@
   "name": "jhtmls",
   "title": "jhtmls",
   "description": "JS and HTML alternate javascript template",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "http://jhtmls.com/",
   "main": "lib/jhtmls",
   "typings": "lib/jhtmls.d.ts",

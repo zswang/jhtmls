@@ -4,8 +4,8 @@
  * JS and HTML alternate javascript template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.0
- * @date 2017-09-30
+ * @version 2.0.1
+ * @date 2017-11-08
  */
 export interface IRender {
   (data: any, helper?: any): string
@@ -304,7 +304,7 @@ function encodeHTML(text: string): string {
   ```
  '''</example>'''
  */
-function jhtmls_render(template: string | Function, data: any, helper: any): string | IRender {
+function jhtmls_render(template: string | Function, data?: any, helper?: any): string | IRender {
   if (typeof template === 'function') { // 函数多行注释处理
     template = String(template).replace(
       /[^]*\/\*!?\s*|\s*\*\/[^]*/g, // 替换掉函数前后部分

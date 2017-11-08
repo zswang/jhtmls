@@ -4,8 +4,8 @@
  * JS and HTML alternate javascript template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.0
- * @date 2017-09-30
+ * @version 2.0.1
+ * @date 2017-11-08
  */
 export interface IRender {
     (data: any, helper?: any): string;
@@ -183,5 +183,5 @@ export { jhtmls_build as build };
   ```
  '''</example>'''
  */
-declare function jhtmls_render(template: string | Function, data: any, helper: any): string | IRender;
+declare function jhtmls_render(template: string | Function, data?: any, helper?: any): string | IRender;
 export { jhtmls_render as render };
