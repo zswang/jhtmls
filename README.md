@@ -37,12 +37,12 @@ jhtmls 是一个不使用标记符的 JavaScript 前端模版，通过分析每�
 
 ```jsx
 React.render(
-	<div>
-		<div>
-			<div>content</div>
-		</div>
-	</div>,
-	document.getElementById('example')
+  <div>
+    <div>
+      <div>content</div>
+    </div>
+  </div>,
+  document.getElementById('example')
 )
 ```
 
