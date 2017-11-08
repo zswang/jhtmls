@@ -122,7 +122,7 @@ MIT © [zswang](http://weibo.com/zswang)
 
 [npm-url]: https://npmjs.org/package/jhtmls
 [npm-image]: https://badge.fury.io/js/jhtmls.svg
-[travis-url]: https://travis-ci.org/jhtmls/jhtmls
-[travis-image]: https://travis-ci.org/jhtmls/jhtmls.svg?branch=master
-[coverage-url]: https://coveralls.io/github/jhtmls/jhtmls?branch=master
-[coverage-image]: https://coveralls.io/repos/jhtmls/jhtmls/badge.svg?branch=master&service=github
+[travis-url]: https://travis-ci.org/zswang/jhtmls
+[travis-image]: https://travis-ci.org/zswang/jhtmls.svg?branch=master
+[coverage-url]: https://coveralls.io/github/zswang/jhtmls?branch=master
+[coverage-image]: https://coveralls.io/repos/zswang/jhtmls/badge.svg?branch=master&service=github
