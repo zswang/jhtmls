@@ -1,10 +1,10 @@
 /**
  * @file jhtmls
  *
- * JS and HTML alternate javascript template
+ * Unmarked front-end template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.1
+ * @version 2.0.3
  * @date 2017-11-08
  */
 export interface IRender {

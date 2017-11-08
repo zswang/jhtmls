@@ -1,8 +1,8 @@
 {
   "name": "jhtmls",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "homepage": "https://github.com/zswang/jhtmls",
-  "description": "JS and HTML alternate javascript template",
+  "description": "Unmarked front-end template",
   "main": "lib/jhtmls.js",
   "moduleType": [
     "globals",

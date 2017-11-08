@@ -1,7 +1,10 @@
 # jhtmls(#$)
 
-[![Build Status](https://img.shields.io/travis/zswang/jhtmls/master.svg)](https://travis-ci.org/zswang/jhtmls)
-[![NPM version](https://img.shields.io/npm/v/jhtmls.svg)](http://badge.fury.io/js/jhtmls)
+[![NPM version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][coverage-image]][coverage-url]
+
+Unmarked front-end template 无标记的前端模板
 
 ## 概述
 
@@ -9,38 +12,38 @@
 
 jhtmls 是一个不使用标记符的 JavaScript 前端模版，通过分析每一行的特征，自动区分「逻辑部分」和「输出部分」
 
-> 举个栗子
+> example 举个栗子
 
 ```html
-<ul> 「输出部分」
-	forEach(function(item)) {「逻辑部分」
-		<li>「输出部分」
-			<a href="#{item.url}" title="#{item.desc}">#{item.title}</a>「输出部分」
-			if (item.photo) {「逻辑部分」
-				<img src="#{item.photo}">「输出部分」
-		  }「逻辑部分」
-		</li>「输出部分」
-	};「逻辑部分」
-</ul>「输出部分」
+<ul> <!--「输出部分」-->
+  forEach(function(item)) { <!--「逻辑部分」-->
+    <li> <!--「输出部分」-->
+      <a href="#{item.url}" title="#{item.desc}">#{item.title}</a> <!--「输出部分」-->
+      if (item.photo) { <!--「逻辑部分」-->
+        <img src="#{item.photo}" ><!--「输出部分」-->
+      } <!--「逻辑部分」-->
+    </li> <!--「输出部分」-->
+  } <!--「逻辑部分」-->
+</ul> <!--「输出部分」-->
 ```
 
 ### 如今这么多 JavaScript 前端模板，jhtmls 存在的意义是什么？
 
-2011年 jhtmls 的前身 `AceTemplate` 就已经存在了，为方便迭代已从 AceEngine 项目中抽离出来。
+2011年 `jhtmls` 的前身 `AceTemplate` 就已经存在了，为方便迭代已从 `AceEngine` 项目中抽离出来。
 
-如果只处理 HTML 格式，那么采用 JavaScript 和 HTML 语法自然穿插的方式，学习和使用成本都很低了。
+如果只处理 `HTML` 格式，那么采用 `JavaScript` 和 `HTML` 语法自然穿插的方式，学习和使用成本都很低了。
 
-> 这种混插的方式与 JSX 类似。
+> 这种混插的方式与 `JSX` 类似。
 
 ```jsx
 React.render(
-    <div>
-        <div>
-            <div>content</div>
-        </div>
-    </div>,
-    document.getElementById('example')
-);
+	<div>
+		<div>
+			<div>content</div>
+		</div>
+	</div>,
+	document.getElementById('example')
+)
 ```
 
 ### jhtmls 解决什么问题？
@@ -69,7 +72,7 @@ React.render(
 
 ### 主要接口
 
-```javascript
+```js
 /**
  * 格式化输出
  *
@@ -112,3 +115,14 @@ document.getElementById('main').innerHTML = render(data);
 ### 历史
 
 为了便于 `jhtmls` 的发展和维护，从 `AceEngine` 抽出 [AceTemplate](https://code.google.com/p/ace-engine/wiki/AceTemplate) 。
+
+## License
+
+MIT © [zswang](http://weibo.com/zswang)
+
+[npm-url]: https://npmjs.org/package/jhtmls
+[npm-image]: https://badge.fury.io/js/jhtmls.svg
+[travis-url]: https://travis-ci.org/jhtmls/jhtmlsjs
+[travis-image]: https://travis-ci.org/jhtmls/jhtmlsjs.svg?branch=master
+[coverage-url]: https://coveralls.io/github/jhtmls/jhtmlsjs?branch=master
+[coverage-image]: https://coveralls.io/repos/jhtmls/jhtmlsjs/badge.svg?branch=master&service=github
