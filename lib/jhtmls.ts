@@ -4,8 +4,8 @@
  * Unmarked front-end template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.6
- * @date 2017-11-08
+ * @version 2.0.7
+ * @date 2018-01-17
  */
 export interface IRender {
   (data: any, helper?: any): string
@@ -141,6 +141,10 @@ function jhtmls_isOutput(line: string): boolean {
   if (/^[ \t]*[&=:|].*$/.test(line)) {
     return true
   }
+  // return 语句
+  if (/^\s*return\b/.test(line)) {
+    return false
+  }
   // 非 JavaScript 字符开头
   // 示例：#、<div>、汉字
   if (/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():,!` \t=\.$_]|:\/\/).*$/.test(line)) {
@@ -152,7 +156,7 @@ function jhtmls_isOutput(line: string): boolean {
   }
   // 不是 else 等单行语句
   // 示例：hello world
-  if (/^(?!\s*(return|else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:{}()\[\],\n|=&\/^?]+$/.test(line)) {
+  if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:{}()\[\],\n|=&\/^?]+$/.test(line)) {
     return true
   }
   return false
@@ -205,14 +209,14 @@ function jhtmls_build(template: string): IRenderInline {
           // 单纯变量，加一个未定义保护
           if (/^[a-z$][\w$]+$/i.test(value) &&
             !(/^(true|false|NaN|null|this)$/.test(value))) {
-            value = 'typeof ' + value + "==='undefined'?'':" + value
+            value = `typeof ${value}==='undefined'?'':${value}`
           }
           switch (flag) {
             case '#':
-              expressions.push('_encode_(' + value + ')')
+              expressions.push(`_encode_(${value})`)
               break
             case '!#':
-              expressions.push('(' + value + ')')
+              expressions.push(`(${value})`)
               break
           }
           return ''
@@ -224,7 +228,7 @@ function jhtmls_build(template: string): IRenderInline {
       if (index < array.length - 1) {
         expressions.push('"\\n"')
       }
-      return '_output_.push(' + expressions + ')'
+      return `_output_.push(${expressions});`
     }
     else {
       return line
