@@ -4,8 +4,8 @@
  * Unmarked front-end template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.7
- * @date 2018-01-17
+ * @version 2.0.11
+ * @date 2018-04-26
  */
 export interface IRender {
   (data: any, helper?: any): string
@@ -147,7 +147,9 @@ function jhtmls_isOutput(line: string): boolean {
   }
   // 非 JavaScript 字符开头
   // 示例：#、<div>、汉字
-  if (/^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():,!` \t=\.$_]|:\/\/).*$/.test(line)) {
+  if (
+    /^[ \w\t_$]*([^&\^?|\n\w\/'"{}\[\]+\-():,!` \t=\.$_]|:\/\/).*$/.test(line)
+  ) {
     return true
   }
   // ```
@@ -156,14 +158,16 @@ function jhtmls_isOutput(line: string): boolean {
   }
   // 不是 else 等单行语句
   // 示例：hello world
-  if (/^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:{}()\[\],\n|=&\/^?]+$/.test(line)) {
+  if (
+    /^(?!\s*(else|do|try|finally|void|typeof\s[\w$_]*)\s*$)[^'"`!:{}()\[\],\n|=&\/^?]+$/.test(
+      line
+    )
+  ) {
     return true
   }
   return false
 } /*</function>*/
-export {
-  jhtmls_isOutput as isOutput
-}
+export { jhtmls_isOutput as isOutput }
 /*<function name="jhtmls_build" depend="jhtmls_isOutput">*/
 /**
  * 构造模板的处理函数
@@ -185,18 +189,18 @@ export {
  */
 function jhtmls_build(template: string): IRenderInline {
   if (!template) {
-    return function () {
+    return function() {
       return ''
     }
   }
   let lines = template.split(/\n\r?/).map((line, index, array) => {
     if (/^\s*$/.test(line)) {
       return line
-    }
-    else if (jhtmls_isOutput(line)) {
+    } else if (jhtmls_isOutput(line)) {
       let expressions = []
       let offset = 0
-      line.replace(/(!?#)\{((?:"(?:[^\\"]|(?:\\.))*"|'(?:[^\\']|(?:\\.))*'|(?:[^{}]*\{[^}]*\})?|[^}]*)*)\}/g,
+      line.replace(
+        /(!?#)\{((?:"(?:[^\\"]|(?:\\.))*"|'(?:[^\\']|(?:\\.))*'|(?:[^{}]*\{[^}]*\})?|[^}]*)*)\}/g,
         (all, flag, value, index) => {
           let text = line.slice(offset, index)
           if (text) {
@@ -207,8 +211,10 @@ function jhtmls_build(template: string): IRenderInline {
             return ''
           }
           // 单纯变量，加一个未定义保护
-          if (/^[a-z$][\w$]+$/i.test(value) &&
-            !(/^(true|false|NaN|null|this)$/.test(value))) {
+          if (
+            /^[a-z$][\w$]+$/i.test(value) &&
+            !/^(true|false|NaN|null|this)$/.test(value)
+          ) {
             value = `typeof ${value}==='undefined'?'':${value}`
           }
           switch (flag) {
@@ -220,7 +226,8 @@ function jhtmls_build(template: string): IRenderInline {
               break
           }
           return ''
-        })
+        }
+      )
       let text = line.slice(offset, line.length)
       if (text) {
         expressions.push(JSON.stringify(text))
@@ -229,21 +236,20 @@ function jhtmls_build(template: string): IRenderInline {
         expressions.push('"\\n"')
       }
       return `_output_.push(${expressions});`
-    }
-    else {
+    } else {
       return line
     }
   })
   lines.unshift('with(this){')
   lines.push('}')
   return new Function(
-    '_output_', '_encode_', 'helper',
+    '_output_',
+    '_encode_',
+    'helper',
     lines.join('\n')
   ) as IRenderInline
 } /*</function>*/
-export {
-  jhtmls_build as build
-}
+export { jhtmls_build as build }
 /*<function name="encodeHTML">*/
 let htmlEncodeDict: {
   [key: string]: string
@@ -302,14 +308,19 @@ function encodeHTML(text: string): string {
  * @example render():encodeHTML
   ```js
   console.log(jhtmls.render('print: #{this}', '\' "'))
-  // > print: &#39 &#34
+  // > print: &#39; &#34;
   console.log(jhtmls.render('print: !#{this}', '\' "'))
   // > print: ' "
   ```
  '''</example>'''
  */
-function jhtmls_render(template: string | Function, data?: any, helper?: any): string | IRender {
-  if (typeof template === 'function') { // 函数多行注释处理
+function jhtmls_render(
+  template: string | Function,
+  data?: any,
+  helper?: any
+): string | IRender {
+  if (typeof template === 'function') {
+    // 函数多行注释处理
     template = String(template).replace(
       /[^]*\/\*!?\s*|\s*\*\/[^]*/g, // 替换掉函数前后部分
       ''
@@ -323,22 +334,21 @@ function jhtmls_render(template: string | Function, data?: any, helper?: any): s
    * @param {Object} d 数据
    * @param {Object} h 辅助对象 helper
    */
-  let format = function (d: any, h: any): string {
+  let format = function(d: any, h: any): string {
     // h = h || fn
     let output = []
     if (typeof h === 'undefined') {
-      h = function (d) {
+      h = function(d) {
         fn.call(d, output, encodeHTML, h)
       }
     }
     fn.call(d, output, encodeHTML, h)
     return output.join('')
   } as IRender
-  if (arguments.length <= 1) { // 无渲染数据
+  if (arguments.length <= 1) {
+    // 无渲染数据
     return format
   }
   return format(data, helper)
 } /*</function>*/
-export {
-  jhtmls_render as render
-}
+export { jhtmls_render as render }

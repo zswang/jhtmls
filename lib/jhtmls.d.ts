@@ -4,8 +4,8 @@
  * Unmarked front-end template
  * @author
  *   zswang (http://weibo.com/zswang)
- * @version 2.0.7
- * @date 2018-01-17
+ * @version 2.0.11
+ * @date 2018-04-26
  */
 export interface IRender {
     (data: any, helper?: any): string;
@@ -177,7 +177,7 @@ export { jhtmls_build as build };
  * @example render():encodeHTML
   ```js
   console.log(jhtmls.render('print: #{this}', '\' "'))
-  // > print: &#39 &#34
+  // > print: &#39; &#34;
   console.log(jhtmls.render('print: !#{this}', '\' "'))
   // > print: ' "
   ```
